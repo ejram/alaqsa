@@ -1,9 +1,10 @@
  <!-- class_delete_dialog to delete class in the classes page -->
  <div id="class_delete_dialog" title= "حذف صف" >
-<? $att=array('id'=>'delete_class_form');
+ <? $att=array('id'=>'delete_class_form');
 echo form_open('',$att);
 echo '<p>' .'هل أنت متأكد من حذف الصف:'.'<span id = \'class_span\'</span></p>';
-$delete_att=array('id'=>'delete_input_id','name'=>'delete_input');
+$delete_att=array('id'=>'delete_input_id',
+                  'name'=>'delete_input');
 echo form_input($delete_att);
 echo form_submit('submit','موافق');
 $cancel_att=array('id'=>'cancel_id','name'=>'cancel_button','onClick'=>'$(\'#class_delete_dialog\').dialog(\'close\');');
