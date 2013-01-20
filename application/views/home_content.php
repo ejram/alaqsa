@@ -75,55 +75,58 @@ echo form_open('', $att);
         {
             case 'aq_levels':
             $level_query=$this->Mhome->get_where('aq_classes',
-                                                 'aqsa_level',
-                                                 $row->aqsa_level);
+                                                 'class_level',
+                                                 $row->level_name);
             $this->table->add_row('<input type="checkbox" 
                                   name="check_list[]" value=\''. $row->level_id .'\'/>',
-                                  $row->level_id,$row->aqsa_level,
+                                  $row->level_id,$row->level_name,
                                   $level_query->num_rows(),
                                   anchor('#','+'),'تعديل',
-                                  '<span class=\'delete\' id='.$row->aqsa_level.
+                                  '<span class=\'delete\' id='.$row->level_name.
                                   'onClick=\' \'>delete</span>'
                                  );
 
             break;
             case 'aq_classes':
             $rooms_num_query=$this->Mhome->get_where('aq_rooms',
-                                                     'aqsa_class',$row->aqsa_class
+                                                     'room_class',$row->class_name
                                                     );
-            echo form_hidden('hidden_class_input_name',$row->aqsa_class);
-            echo form_hidden('hidden_level_input_name',$row->aqsa_level);
+            echo form_hidden('hidden_class_input_name',$row->class_name);
+            echo form_hidden('hidden_level_input_name',$row->class_level);
             $this->table->add_row('<input type="checkbox" 
                                   name="check_list[]" value=\''. $row->class_id .'\'/>',
-                                  $row->aqsa_level,$row->aqsa_class,
+                                  $row->class_level,$row->class_name,
                                   $rooms_num_query->num_rows(),
-                                  '<span class=\'insert_room\' id='.$row->aqsa_class.'>+</span>',
-                                  '<span>تعديل</span>','<span class=\'delete\' id='.$row->aqsa_class.
-                                  'onClick=\' \'>delete</span>'
+                                  '<span class=\'insert_room\' id='.$row->class_name.'>+</span>',
+                                  '<span>تعديل</span>','<span class=\'delete\' id='.$row->class_name.
+                                  '>delete</span>'
                                  );
 
             break;
             case 'aq_rooms':
             $aqsa_level_query1=$this->Mhome->get_where('aq_classes',
-                                                       'aqsa_class',
-                                                       $row->aqsa_class
+                                                       'class_name',
+                                                       $row->room_class
                                                       );
             $Qs=$aqsa_level_query1->row();
             $this->table->add_row('<input type="checkbox"
                                   name="check_list[]" value=\''. $row->room_id .'\' />',
-                                  $Qs->aqsa_level,$row->aqsa_class,
+                                  $Qs->class_level,$row->room_class,
                                   $row->room_name,
-                                  'تعديل','<span class=\'delete\' id='.$row->aqsa_class.
+                                  'تعديل','<span class=\'delete\' id='.$row->room_class.
                                   'onClick=\' \'>delete</span>'
                                  ); 
  
             break;
             case 'aq_subjects':
+            $subject_query=$this->Mhome->get_where('aq_classes',
+            									 'class_name',
+            									 $row->subject_class);
             $this->table->add_row('<input type="checkbox" 
                                   name="check_list[]" value=\''. $row->subject_id .'\' />',
-                                  $row->subject_name,$row->aqsa_level,
-                                  $row->aqsa_class,
-                                  'تعديل','<span class=\'delete\' id='.$row->aqsa_class.
+                                  $row->subject_name,$subject_query->class_level,
+                                  $row->subject_class,
+                                  'تعديل','<span class=\'delete\' id='.$row->subject_class.
                                   'onClick=\' \'>delete</span>'
                                  );       
 
@@ -140,11 +143,14 @@ echo form_open('', $att);
 
             break;
             case 'aq_skills':
+            $skill_query=$this->Mhome->get_where('aq_tests',
+            									   'test_name',
+            										$row->skill_test);
             $this->table->add_row('<input type="checkbox"
                                   name="check_list[]" value=\''. $row->skill_id .'\' />',
                                   $row->skill_id,$row->skill_name,
-                                  $row->skill_min_grade,
-                                  $row->skill_max_grade,
+                                  $row->min_grade,
+                                  $row->max_grade,
                                   anchor('#','تعديل')
                                  ); 
 
@@ -161,10 +167,10 @@ echo form_open('', $att);
                     // Insert Class form
         echo '<p>'.'إضافة صف:'.'</p>';
         $att=array('id'=>'class_insert_form');
-        $this->db->select('aqsa_level')->from('aq_levels');
+        $this->db->select('level_name')->from('aq_levels');
         $levels1=$this->db->get();
         foreach ($levels1->result() as $row){
-        $levels[$row->aqsa_level]=$row->aqsa_level;
+        $levels[$row->level_name]=$row->level_name;
         
         }
         echo form_open('',$att);

@@ -2,7 +2,7 @@
  <div id="class_delete_dialog" title= "حذف صف" >
  <? $att=array('id'=>'delete_class_form');
 echo form_open('',$att);
-echo '<p>' .'هل أنت متأكد من حذف الصف:'.'<span id = \'class_span\'</span></p>';
+echo '<p>' .'هل أنت متأكد من حذف الصف:'.'<span id = \'class_span\'></span></p>';
 $delete_att=array('id'=>'delete_input_id',
                   'name'=>'delete_input');
 echo form_input($delete_att);
