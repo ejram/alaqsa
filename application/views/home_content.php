@@ -91,14 +91,16 @@ echo form_open('', $att);
             $rooms_num_query=$this->Mhome->get_where('aq_rooms',
                                                      'room_class',$row->class_name
                                                     );
-            echo form_hidden('hidden_class_input_name',$row->class_name);
-            echo form_hidden('hidden_level_input_name',$row->class_level);
+            $hidden_class_input_att = array('id' => 'hidden_class_modify_input_id', 'name' => 'hidden_class_input_name','value'=> $row->class_name);
+            $hidden_level_input_att = array('id' => 'hidden_class_level_modify_id', 'name' => 'hidden_level_input_name','value'=> $row->class_level);
+            echo form_input($hidden_class_input_att);
+            echo form_input($hidden_level_input_att);
             $this->table->add_row('<input type="checkbox" 
                                   name="check_list[]" value=\''. $row->class_id .'\'/>',
                                   $row->class_level,$row->class_name,
                                   $rooms_num_query->num_rows(),
                                   '<span class=\'insert_room\' id='.$row->class_name.'>+</span>',
-                                  '<span>تعديل</span>','<span class=\'delete\' id='.$row->class_name.
+                                  '<span class=\'modify_class\'>تعديل</span>','<span class=\'delete\' id='.$row->class_name.
                                   '>delete</span>'
                                  );
 
