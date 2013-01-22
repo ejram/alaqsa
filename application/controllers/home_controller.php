@@ -80,6 +80,15 @@ class home_controller extends CI_Controller {
         echo '<p>عدد الفصول'. form_input('class_dep_num2','5').'</p>';
         echo '<p>'.form_submit('submit','إضافة').'</p>';
         echo form_close();
-}
-
+	}
+	public function modify_class(){
+		$level_name= $_POST['class_level_modify_name'];
+		$class_name = $_POST['class_modify_input_name'];
+		$class_past_name = $_POST['hidden_past_class_id'];
+		
+		$modify_att = array ('class_name' => $class_name,
+					  'class_level' => $level_name
+					 );
+		$this->db->update('aq_classes', $modify_att,array('class_name' => $class_past_name));
+	}
 }

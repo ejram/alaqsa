@@ -8,6 +8,7 @@ $(document).ready(function()
     form_submit('#table_form','del_class');
     form_submit('#class_insert_form','ins_class');
     form_submit('#room_insert_form','ins_room');
+    form_submit('#modify_class_form','modify_class');
     
     $('#class_modify_dialog').dialog( { autoOpen: false, draggable: false,
         								modal: true, resizable: false,
@@ -18,6 +19,7 @@ $(document).ready(function()
     	document.getElementById('class_modify_input_id').value=$var1;
     	$var2=document.getElementById('hidden_class_level_modify_id').value;
     	document.getElementById('class_level_modify_id').value=$var2;
+    	document.getElementById('hidden_past_class_id').value=$var1;    	
     	$('#class_modify_dialog').dialog('open');
     	return false;
     });    
