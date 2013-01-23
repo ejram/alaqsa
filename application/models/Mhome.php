@@ -39,8 +39,9 @@
         echo $this->table->generate(); 
         echo "Number of rows = ". $Q->num_rows();
         }
-         public function get_where($class_where,$col_where,$value_where) {
-             $this->db->from($class_where)->where($col_where,$value_where);
+        
+         public function get_where($table_where,$array_where) {
+             $this->db->from($table_where)->where($array_where);
              return $this->db->get();
     }
         public function Get_query_all($table)
@@ -74,6 +75,26 @@
         {
             echo $var1+$var2;
         }
+        public function get_levels(){
+        	$query=$this->db->get('aq_levels');
+        	foreach ($query->result() as $row){
+        		$levels[$row->level_name]=$row->level_name;
+        		
+        	}
+        	return $levels;
+        	 
 
     }
+    public function get_classes(){
+    	$query=$this->db->get('aq_classes');
+    	foreach ($query->result() as $row){
+    		$classes[$row->class_name]=$row->class_name;
+    
+    	}
+    	return $classes;
+    
+    
+    }
+
+ }
     

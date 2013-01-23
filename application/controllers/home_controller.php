@@ -49,7 +49,6 @@ class home_controller extends CI_Controller {
 	public function ins_class() {
     	$aqsa_level1	= $_POST ['aqsa_level2'];
     	$aqsa_class1 	= $_POST ['aqsa_class2'];
-    	$class_dep_num1 = $_POST ['class_dep_num2'];
     	$att1 = array	(	'class_level' 	  => $aqsa_level1,
     						'class_name'	  => $aqsa_class1    						
 						);
@@ -57,9 +56,11 @@ class home_controller extends CI_Controller {
     
 	}
 	public function ins_room() {
-    	$aqsa_class = $_POST['room_hidden_input_name'];
+		$room_level = $_POST['room_insert_level_name'];
+    	$room_class = $_POST['room_insert_class_name'];
     	$room_name =  $_POST['room_insert_name'];
-   		$att = array (	'room_class' => $aqsa_class,
+   		$att = array (	'room_class' => $room_class,
+   						'room_level' => $room_level,
 						'room_name'  => $room_name
    					 );
     	$this->ins_query('aq_rooms', $att);   
@@ -81,6 +82,7 @@ class home_controller extends CI_Controller {
         echo '<p>'.form_submit('submit','إضافة').'</p>';
         echo form_close();
 	}
+	
 	public function modify_class(){
 		$level_name= $_POST['class_level_modify_name'];
 		$class_name = $_POST['class_modify_input_name'];
@@ -91,4 +93,16 @@ class home_controller extends CI_Controller {
 					 );
 		$this->db->update('aq_classes', $modify_att,array('class_name' => $class_past_name));
 	}
+	
+	public function modify_level(){
+		$level_name= $_POST['level_modify_name'];
+		$level_past_name = $_POST['hidden_past_level_name'];
+	
+		$modify_att = array ('level_name' => $level_name);
+		$this->db->where('level_id', $level_past_name);
+		$this->db->update('aq_levels', $modify_att);
+	}
+	
+
+	
 }
