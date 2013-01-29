@@ -78,7 +78,7 @@
 
 	echo form_open('', $att);
 
-	echo '<p>المرحلة: '. form_dropdown('class_level_modify_name',$levels).'</p>';
+	echo '<p>المرحلة: '. form_dropdown('class_level_modify_name',$levels,'','class="level_drop"').'</p>';
 
 	echo ' :اسم الصف ' . form_input($class_modify_input_att);
 
@@ -100,7 +100,7 @@
 	$att=array('id'=>'class_insert_form');
 	$levels = $this->Mhome->get_levels();
 	echo form_open('',$att);
-	echo '<p>المرحلة:'. form_dropdown('aqsa_level2',$levels).'</p>';
+	echo '<p>المرحلة:'. form_dropdown('aqsa_level2',$levels,'','class="level_drop"').'</p>';
 	echo '<p>الصف:'. form_input('aqsa_class2','الأول').'</p>';
 	echo '<p>'.form_submit('submit','إضافة').'</p>';
 	echo form_close();
@@ -114,10 +114,11 @@
 	echo '<p>'.'إضافة فصل:'.'</p>';
 	$att=array('id'=>'room_insert_form');
 	$levels = $this->Mhome->get_levels();
-	$classes = $this->Mhome->get_classes();
+	$classes = array(''=>'');
+	$rooms = array(''=>'');
 	echo form_open('',$att);
-	echo '<p>المرحلة:'. form_dropdown('room_insert_level_name',$levels).'</p>';
-	echo '<p>الصف:'. form_dropdown('room_insert_class_name',$classes).'</p>';
+	echo '<p>المرحلة:'. form_dropdown('room_insert_level_name',$levels,'','class="level_drop"').'</p>';
+	echo '<p>الصف:'. form_dropdown('room_insert_class_name',$classes,'','class="class_drop"').'</p>';
 	echo '<p>الفصل:'. form_input('room_insert_name','').'</p>';
 
 	echo '<p>'.form_submit('submit','إضافة').'</p>';
@@ -167,10 +168,11 @@
          echo '<p>'.'اسم  الفصل:'.'</p>';
          $att=array('id'=>'room_modify_form');
          $levels = $this->Mhome->get_levels();
-         $classes = $this->Mhome->get_classes();
-         echo form_open('',$att);
-         echo '<p>المرحلة:'. form_dropdown('room_insert_level_name',$levels).'</p>';
-         echo '<p>الصف:'. form_dropdown('room_insert_class_name',$classes).'</p>';
+	$classes = array(''=>'');
+	$rooms = array(''=>'');
+	         echo form_open('',$att);
+         echo '<p>المرحلة:'. form_dropdown('room_insert_level_name',$levels,'','class="level_drop"').'</p>';
+         echo '<p>الصف:'. form_dropdown('room_insert_class_name',$classes,'','class="class_drop"').'</p>';
          echo '<p>الفصل:'. form_input('room_insert_name','').'</p>';
          echo form_input($room_hidden_past_id);
 

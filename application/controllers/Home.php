@@ -96,21 +96,44 @@ class Home extends CI_Controller {
 		$this->db->update('aq_levels', $modify_att);
 	}
 	public function level_classes(){
-		$level_name1 = $_POST['level_name'];	
+		$level_name1 = $_POST['level_name'];
 		$this->db->select('class_name');
 		$classes1 = $this->Mhome->get_where('aq_classes',array('class_level'=>$level_name1));
 		$i=0;
 		$json_data="";
+		if(!$classes1->result())
+		{
+			echo "false";
+			exit;
+		}
 		foreach($classes1->result() as $row){
 			$classes[$i]=$row->class_name;
 			$i++;
 		}
+			
 		echo json_encode($classes, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+
+
+
 	}
 	public function class_rooms(){
+		$level_name = $_POST['level_name'];
 		$class_name = $_POST['class_name'];
-		$rooms = get_where('aq_rooms',array('room_class'=>$class_name));
-		return $rooms;
+		$this->db->select('room_name');
+		$rooms_query = $this->Mhome->get_where('aq_rooms',array('room_class'=>$class_name,'room_level'=>$level_name));
+		$i=0;
+		$json_data="";
+		if(!$rooms_query->result())
+		{
+			echo "false";
+			exit;
+		}
+		foreach($rooms_query->result() as $row){
+			$rooms[$i]=$row->room_name;
+			$i++;
+		}
+
+		echo json_encode($rooms, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
 	}
 
 

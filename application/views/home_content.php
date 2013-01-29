@@ -180,11 +180,14 @@
 	echo form_close();
 	echo "Number of rows = ". $Q->num_rows();
 	$levels = $this->Mhome->get_levels();
-	$classes = $this->Mhome->get_classes();
+	
+	$classes = array(''=>'');
+	$rooms = array(''=>'');
 	
 	$attt=array('id'=>'drop_test');
-	echo form_dropdown('dropdown_name',$levels,'','id="drop_test"');
-	echo form_dropdown('dropdown_name1','id="drop_test1"');
+	echo form_dropdown('dropdown_name',$levels,'','class="level_drop"');
+	echo form_dropdown('dropdown_name1',$classes,'','class="class_drop"');
+	echo form_dropdown('dropdown_name2',$rooms,'','class="room_drop"');
 	
 
 	?>
