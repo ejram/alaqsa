@@ -15,6 +15,7 @@ $(document).ready(function()
     
     form_submit('#modify_class_form','modify_class');
     form_submit('#modify_level_form','modify_level');
+    form_submit('#modify_room_form','modify_room');
     
     
     
@@ -57,6 +58,19 @@ $(document).ready(function()
     	return false;
     }); 
     
+
+    //open dialog to modify a class.
+    $('#room_modify_dialog').dialog( { autoOpen: false, draggable: false,
+        								modal: true, resizable: false,
+        								show: { effect: 'drop', direction: "up" } ,
+        								width: 400 } );
+    $('.modify_room').click(function(){    	
+
+    	document.getElementById('hidden_past_room_id').value=this.id;
+  	
+    	$('#room_modify_dialog').dialog('open');
+    	return false;
+    }); 
     
     //open dialog to modify a level.
     $('#level_modify_dialog').dialog( { autoOpen: false, draggable: false,
@@ -107,7 +121,7 @@ $(document).ready(function()
     
 		$(submit_form).submit(function()
 				{
-			$.post("http://localhost/alaqsa/home_controller/" + submit_dest,
+			$.post("http://localhost/alaqsa/Home/" + submit_dest,
 					$(submit_form).serialize(),
 					function(data){
 				document.location.replace("http://localhost/alaqsa");
@@ -116,3 +130,17 @@ $(document).ready(function()
 				})
     
 }
+	function drop_change(dest_ctrl,drop_button)
+	{
+		
+		$(drop_button).change(function()
+				{
+			$.post("http://localhost/alaqsa/Home/" + dest_ctrl,
+			this.value	
+			);
+			
+				});
+		
+		
+	}
+	

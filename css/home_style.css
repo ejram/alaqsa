@@ -13,6 +13,9 @@ cursor:pointer;
 .mytable th{
     background-color:#C0C0FF;
 }
+.mytable tr:hover{
+	background-color:#1ff;
+}
 .mytable
 {
     border-color:#585858;
