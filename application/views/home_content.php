@@ -179,8 +179,13 @@
 	echo form_submit('submit','حذف');
 	echo form_close();
 	echo "Number of rows = ". $Q->num_rows();
-
-
+	$levels = $this->Mhome->get_levels();
+	$classes = $this->Mhome->get_classes();
+	
+	$attt=array('id'=>'drop_test');
+	echo form_dropdown('dropdown_name',$levels,'','id="drop_test"');
+	echo form_dropdown('dropdown_name1','id="drop_test1"');
+	
 
 	?>
 

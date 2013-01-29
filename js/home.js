@@ -16,7 +16,7 @@ $(document).ready(function()
     form_submit('#modify_class_form','modify_class');
     form_submit('#modify_level_form','modify_level');
     form_submit('#modify_room_form','modify_room');
-    
+    drop_change('level_classes','#drop_test');
     
     
     //open dialog for adding class.
@@ -136,7 +136,16 @@ $(document).ready(function()
 		$(drop_button).change(function()
 				{
 			$.post("http://localhost/alaqsa/Home/" + dest_ctrl,
-			this.value	
+			{'level_name':this.value},function(data){
+				obj=JSON.parse(data);
+				alert(obj);
+				
+				for (i=0;i<obj.length;i++){
+					   $('<option/>').val(obj[i]).html(obj[i]).appendTo('#drop_test1');
+					}
+				alert (obj.length);
+			
+			}	
 			);
 			
 				});

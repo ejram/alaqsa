@@ -96,9 +96,16 @@ class Home extends CI_Controller {
 		$this->db->update('aq_levels', $modify_att);
 	}
 	public function level_classes(){
-		$level_name = $_POST['level_name'];
-		$classes = get_where('aq_classes',array('class_level'=>$level_name));
-		return $classes;
+		$level_name1 = $_POST['level_name'];	
+		$this->db->select('class_name');
+		$classes1 = $this->Mhome->get_where('aq_classes',array('class_level'=>$level_name1));
+		$i=0;
+		$json_data="";
+		foreach($classes1->result() as $row){
+			$classes[$i]=$row->class_name;
+			$i++;
+		}
+		echo json_encode($classes, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
 	}
 	public function class_rooms(){
 		$class_name = $_POST['class_name'];
