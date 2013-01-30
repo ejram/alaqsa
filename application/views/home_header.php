@@ -17,8 +17,7 @@
 <body>
 	<div id="navdiv">
 		<ul id="nav">
-			<li><a href="<?= base_url(); ?> ">الرئيسية</a>
-			</li>
+
 			<li><a href="<?= base_url(); ?>Home/c_panel/aq_levels"> المراحل </a>
 			</li>
 			<li><a href="<?= base_url(); ?>Home/c_panel/aq_classes"> الصفوف </a>

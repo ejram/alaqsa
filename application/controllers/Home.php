@@ -4,7 +4,7 @@ class Home extends CI_Controller {
 
 	public function index()
 	{
-		$this->c_panel('aq_classes');
+		$this->c_panel('aq_levels');
 	}
 	public function c_panel($table_data)
 	{
@@ -18,7 +18,6 @@ class Home extends CI_Controller {
 	public function del_query($table, $where, $value)
 	{
 		echo $this->Mhome->delete_query($table,$where,$value);
-		echo 'done';
 	}
 	public function ins_query($table,$data)
 	{

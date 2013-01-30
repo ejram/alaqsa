@@ -9,6 +9,7 @@
 	$this->table->set_template($tmpl);
 	switch ($table_data)
 	{
+
 		case 'aq_levels':
 			$this->table->set_heading('<input type = "checkbox" name = "classes_check"
 					value = "all" />',
@@ -71,8 +72,15 @@
 							echo form_hidden('hidden_table_name',$table_data);
 							echo form_hidden('hidden_item_id','skill_id');
 							break;
-		default:
-			echo "";
+		case 'aq_users':
+			$this->table->set_heading('<input type="checkbox"
+					name="users_check" value="all" />','اسم المستخدم','اسم الدخول ','كلمة السر','البريد  الالكتروني','الهاتف ','مسمى الوظيفة','تعديل المستخدم'
+							);
+							echo form_hidden('hidden_table_name',$table_data);
+							echo form_hidden('hidden_item_id','user_id');
+								
+							break;
+
 	}
 	$Q=$this->Mhome->Get_query_all($table_data);
 	foreach ($Q-> result() as $row){
@@ -119,7 +127,7 @@
 						name="check_list[]" value=\''. $row->room_id .'\' />',
 						$row->room_level,$row->room_class,
 						$row->room_name,'<span id = '.$row->room_id.' class=\'modify_room\'>
-						تعديل','<span class=\'delete\' id='.$row->room_class.
+						تعديل</span>','<span class=\'delete\' id='.$row->room_class.
 						'onClick=\' \'>delete</span>'
 				);
 
@@ -170,6 +178,16 @@
 				);
 
 				break;
+			case 'aq_users':
+				$this->table->add_row('<input type="checkbox"
+						name="check_list[]" value=\''. $row->user_id . '\'/>',
+						$row->user_name,$row->user_username,
+						$row->user_password,$row->user_email,
+						$row->user_mobile,$row->user_role,
+						'<span id = '.$row->user_id.' class=\'modify_user\'>تعديل</span>'
+
+								);
+								break;
 			default:
 				echo "";
 		}

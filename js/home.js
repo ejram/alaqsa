@@ -20,6 +20,7 @@ $(document).ready(function()
 	form_submit('#modify_room_form','modify_room');
 	$('.level_drop').change(function()
 			{
+		put_rooms();
 		Level_Name=$('.level_drop').val();
 		$.post("http://localhost/alaqsa/Home/" + 'level_classes',
 				{'level_name':this.value},function(data){
@@ -158,31 +159,14 @@ function form_submit(submit_form,submit_dest)
 		$.post("http://localhost/alaqsa/Home/" + submit_dest,
 				$(submit_form).serialize(),
 				function(data){
-			document.location.replace("http://localhost/alaqsa");
+			window.location.reload(true);
 		});
 		return false;
 			})
 
 }
-function drop_change(dest_ctrl,drop_button)
-{
 
-	$('.drop_test').change(function()
-			{
-		$.post("http://localhost/alaqsa/Home/" + 'level_classes',
-				{'level_name':this.value},function(data){
-					obj=JSON.parse(data);
-					$('.drop_test1').empty();
 
-					for (i=0;i<obj.length;i++){
-						$('<option/>').val(obj[i]).html(obj[i]).appendTo('.drop_test1');
-					}
-
-				}	
-		);
-
-			});
-}
 function put_classes(){
 	Level_Name=$('.level_drop').val();
 	$.post("http://localhost/alaqsa/Home/" + 'level_classes',
@@ -203,7 +187,6 @@ function put_rooms(){
 	$.post("http://localhost/alaqsa/Home/" + 'class_rooms',
 			{'class_name':$('.class_drop').val(),'level_name':$('.level_drop').val()},function(data){
 				obj=JSON.parse(data);
-				alert(obj);
 				$('.room_drop').empty();
 
 				for (i=0;i<obj.length;i++){
