@@ -63,7 +63,7 @@ $(document).ready(function()
 
 	Dialogload('#class_delete_dialog','.delete_level_button',400,'delete_input_id');
 
-
+	form_submit('#level_insert_form','level_insert');
 	form_submit('#table_form','del_class');
 
 	form_submit('#class_insert_form','ins_class');
@@ -72,7 +72,13 @@ $(document).ready(function()
 
 	form_submit('#modify_class_form','modify_class');
 	form_submit('#modify_level_form','modify_level');
-	form_submit('#modify_room_form','modify_room');
+	form_submit('#room_modify_form','modify_room');
+	form_submit('#teacher_insert_form','teacher_insert');
+	form_submit('#subject_insert_form','subject_insert');
+	form_submit('#test_insert_form','test_insert');
+	form_submit('#skill_insert_form','skill_insert');
+	form_submit('#user_insert_form','user_insert');
+
 
 
 

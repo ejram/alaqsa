@@ -6,7 +6,7 @@ class Home extends CI_Controller {
 		$this->check_isvalidated();
 
 	}
-
+//////////////////////
 	public function index()
 	{
 
@@ -27,6 +27,7 @@ class Home extends CI_Controller {
 				break;
 		}
 	}
+	////////////////////
 	public function c_panel($table_data)
 	{
 		$data ['table_data'] = $table_data;
@@ -35,27 +36,30 @@ class Home extends CI_Controller {
 		$this->load->view('admin_footer');
 		$this->load->view('admin_addation');
 	}
+	//////////////////
 	private function check_isvalidated(){
 		if(! $this->session->userdata('validated')){
 			redirect('login');
 		}
 	}
+	///////////////////
 	public function do_logout(){
 		$this->session->sess_destroy();
 		redirect('login');
 	}
-
+	////////////////////
 	public function del_query($table, $where, $value)
 	{
 		echo $this->Mhome->delete_query($table,$where,$value);
 	}
+	///////////////////
 	public function ins_query($table,$data)
 	{
 		$this->Mhome->Insert_query($table,$data);
 	}
 
 
-
+	////////////////
 	public function del_class() {
 		$table_name = $_POST ['hidden_table_name'];
 		$item_id    = $_POST ['hidden_item_id'];
@@ -67,6 +71,7 @@ class Home extends CI_Controller {
 			}
 		}
 	}
+	//////////////////
 	public function ins_class() {
 		$aqsa_level1	= $_POST ['aqsa_level2'];
 		$aqsa_class1 	= $_POST ['aqsa_class2'];
@@ -76,6 +81,85 @@ class Home extends CI_Controller {
 		$this->ins_query('aq_classes',$att1);
 
 	}
+	//////////////////
+	public function level_insert() {
+		$level_name	= $_POST ['level_insert_name'];
+		$att1 = array	(	'level_name' 	  => $level_name);
+		$this->ins_query('aq_levels',$att1);
+	
+	}
+	//////////////////
+	public function teacher_insert() {
+		$att1 = array(
+		'teacher_name' 			=> $_POST ['teacher_name'],
+		'teacher_idnumber'		=> $_POST ['teacher_idnumber'],
+		'teacher_birthplace'	=> $_POST ['teacher_birthplace'],
+		'teacher_birthdate'		=> $_POST ['teacher_birthdate'],
+		'teacher_specialist'	=> $_POST ['teacher_specialist'],
+		'teacher_gradedate'		=> $_POST ['teacher_gradedate'],
+		'teacher_qual'			=> $_POST ['teacher_qual'],
+		'teacher_university'	=> $_POST ['teacher_university'],
+		'teacher_nationality'	=> $_POST ['teacher_nationality'],
+		'teacher_email'			=> $_POST ['teacher_email'],
+		'teacher_mobile'		=> $_POST ['teacher_mobile'],
+	);
+		$this->ins_query('aq_teachers',$att1);
+	
+	}
+	//////////////////
+	public function subject_insert() {
+		$att1 = array(
+				'subject_name' 			=> $_POST ['subject_name'],
+				'subject_level'			=> $_POST ['subject_level'],
+				'subject_class'			=> $_POST ['subject_class'],
+
+		);
+		$this->ins_query('aq_subjects',$att1);
+	
+	}
+	
+	//////////////////
+	public function test_insert() {
+		$att1 = array(
+				'test_name' 			=> $_POST ['test_name'],
+				'test_subject'			=> $_POST ['test_subject'],
+	
+		);
+		$this->ins_query('aq_tests',$att1);
+	
+	}
+	
+	
+	//////////////////
+	public function skill_insert() {
+		$att1 = array(
+				'skill_name' 	=> $_POST ['skill_name'],
+				'skill_test'	=> $_POST ['skill_test'],
+				'min_grade'		=> $_POST ['min_grade'],
+				'max_grade'		=> $_POST ['max_grade']
+				
+	
+		);
+		$this->ins_query('aq_skills',$att1);
+	
+	}
+	
+	//////////////////
+	public function user_insert() {
+		$att1 = array(
+				'user_name' 		=> $_POST ['user_name'],
+				'user_username'		=> $_POST ['user_username'],
+				'user_password'		=> $_POST ['user_password'],
+				'user_email'		=> $_POST ['user_email'],
+				'user_mobile'		=> $_POST ['user_mobile'],
+				'user_role'			=> $_POST ['user_role']
+				
+	
+		);
+		$this->ins_query('aq_users',$att1);
+	
+	}
+	////////////////////
 	public function ins_room() {
 		$room_level = $_POST['room_insert_level_name'];
 		$room_class = $_POST['room_insert_class_name'];
@@ -86,6 +170,7 @@ class Home extends CI_Controller {
 		);
 		$this->ins_query('aq_rooms', $att);
 	}
+	//////////////////////
 	public function insert_class_form() {
 		// Insert Class form
 		echo ' <p> ' . ' إضافة صف: ' . ' </p> ' ;
@@ -102,19 +187,19 @@ class Home extends CI_Controller {
 		echo '<p>'.form_submit('submit','إضافة').'</p>';
 		echo form_close();
 	}
-
+	/////////////////////
 	public function modify_class(){
 		$level_name= $_POST['class_level_modify_name'];
 		$class_name = $_POST['class_modify_input_name'];
 		$class_past_name = $_POST['hidden_past_class_id'];
 
 		$modify_att = array ('class_name' => $class_name,
-				'class_level' => $level_name
+							'class_level' => $level_name
 		);
 		$this->db->where('class_id',$class_past_name);
 		$this->db->update('aq_classes', $modify_att);
 	}
-
+	/////////////////
 	public function modify_level(){
 		$level_name= $_POST['level_modify_name'];
 		$level_past_name = $_POST['hidden_past_level_name'];
@@ -123,6 +208,23 @@ class Home extends CI_Controller {
 		$this->db->where('level_id', $level_past_name);
 		$this->db->update('aq_levels', $modify_att);
 	}
+	/////////////////
+	public function modify_room(){
+		$level_name= $_POST['room_insert_level_name'];
+		$class_name= $_POST['room_insert_class_name'];
+		$room_name= $_POST['room_insert_name'];		
+		$room_past_name = $_POST['hidden_past_room_name'];
+	
+		$modify_att = array ('room_name' => $room_name, 'room_class' => $class_name, 'room_level' => $level_name);
+		$this->db->where('room_id', $room_past_name);
+		$this->db->update('aq_rooms', $modify_att);
+		echo "fd";
+	}
+	
+	
+	
+	
+	//////////////
 	public function level_classes(){
 		$level_name1 = $_POST['level_name'];
 		$this->db->select('class_name');
@@ -144,6 +246,7 @@ class Home extends CI_Controller {
 
 
 	}
+	//////////////////////////
 	public function class_rooms(){
 		$level_name = $_POST['level_name'];
 		$class_name = $_POST['class_name'];

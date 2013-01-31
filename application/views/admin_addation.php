@@ -164,7 +164,7 @@
  										  'onClick' => '$(\'#room_modify_dialog\')
 											.dialog(\'close\');');
 		$room_hidden_past_id = array('id'  => 'hidden_past_room_id',
-		'name'=> 'hidden_past_room_id');
+		'name'=> 'hidden_past_room_name');
          echo '<p>'.'اسم  الفصل:'.'</p>';
          $att=array('id'=>'room_modify_form');
          $levels = $this->Mhome->get_levels();
