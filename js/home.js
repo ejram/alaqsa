@@ -1,9 +1,64 @@
 //Main document ready
 $(document).ready(function()
 		{
-	var Level_Name='';
 	put_classes();
 	put_rooms();
+	$('.level_drop').change(function()
+			{
+		$.post("http://localhost/alaqsa/Home/" + 'level_classes',
+				{'level_name':$('.level_drop').val()})
+				.done(function(data){
+					obj=JSON.parse(data);
+					$('.class_drop').empty();
+
+					for (i=0;i<obj.length;i++){
+						$('<option/>').val(obj[i]).html(obj[i]).appendTo('.class_drop');
+					}
+
+				})
+				.fail(function(){
+					$('.class_drop').empty();
+
+
+				});
+
+		$.post("http://localhost/alaqsa/Home/" + 'class_rooms',
+				{'class_name':$('.class_drop').val(),'level_name':$('.level_drop').val()})
+				.done(function(data){
+					obj=JSON.parse(data);
+					$('.room_drop').empty();
+
+					for (i=0;i<obj.length;i++){
+						$('<option/>').val(obj[i]).html(obj[i]).appendTo('.room_drop');
+					}
+
+				})
+				.fail(function(data){
+					$('.room_drop').empty();
+
+				});
+
+			});    
+	$('.class_drop').change(function()
+			{
+
+		$.post("http://localhost/alaqsa/Home/" + 'class_rooms',
+				{'class_name':$('.class_drop').val(),'level_name':$('.level_drop').val()})
+				.done(function(data){
+					obj=JSON.parse(data);
+					$('.room_drop').empty();
+
+					for (i=0;i<obj.length;i++){
+						$('<option/>').val(obj[i]).html(obj[i]).appendTo('.room_drop');
+					}
+
+				})
+				.fail(function(data){
+					$('.room_drop').empty();
+
+				});
+
+			}); 
 	Dialogload('#class_delete_dialog','.delete',400,'delete_input_id');
 
 	Dialogload('#class_delete_dialog','.delete_level_button',400,'delete_input_id');
@@ -18,41 +73,8 @@ $(document).ready(function()
 	form_submit('#modify_class_form','modify_class');
 	form_submit('#modify_level_form','modify_level');
 	form_submit('#modify_room_form','modify_room');
-	$('.level_drop').change(function()
-			{
-		put_rooms();
-		Level_Name=$('.level_drop').val();
-		$.post("http://localhost/alaqsa/Home/" + 'level_classes',
-				{'level_name':this.value},function(data){
-					obj=JSON.parse(data);
-					$('.class_drop').empty();
 
-					for (i=0;i<obj.length;i++){
-						$('<option/>').val(obj[i]).html(obj[i]).appendTo('.class_drop');
-					}
 
-				}	
-		);
-
-			});    
-	$('.class_drop').change(function()
-			{
-		Level_Name=$('.level_drop').val();
-		var class_name=$('.class_drop').val();
-		$.post("http://localhost/alaqsa/Home/" + 'class_rooms',
-				{'class_name':$('.class_drop').val(),'level_name':Level_Name},function(data){
-					obj=JSON.parse(data);
-					alert(obj);
-					$('.room_drop').empty();
-
-					for (i=0;i<obj.length;i++){
-						$('<option/>').val(obj[i]).html(obj[i]).appendTo('.room_drop');
-					}
-
-				}	
-		);
-
-			}); 
 
 	//open dialog for adding class.
 	$( '#add_class_dialog' ).dialog( {autoOpen: false, draggable: false,
@@ -168,9 +190,9 @@ function form_submit(submit_form,submit_dest)
 
 
 function put_classes(){
-	Level_Name=$('.level_drop').val();
 	$.post("http://localhost/alaqsa/Home/" + 'level_classes',
-			{'level_name':Level_Name},function(data){
+			{'level_name':$('.level_drop').val()})
+			.done(function(data){
 				obj=JSON.parse(data);
 				$('.class_drop').empty();
 
@@ -178,23 +200,32 @@ function put_classes(){
 					$('<option/>').val(obj[i]).html(obj[i]).appendTo('.class_drop');
 				}
 
-			}	
-	);
+			})
+			.fail(function(){
+				$('.class_drop').empty();
+
+
+			});
+
+
+
 }
 function put_rooms(){
-	Level_Name=$('.level_drop').val();
-	var class_name=$('.class_drop').val();
 	$.post("http://localhost/alaqsa/Home/" + 'class_rooms',
-			{'class_name':$('.class_drop').val(),'level_name':$('.level_drop').val()},function(data){
+			{'class_name':$('.class_drop').val(),'level_name':$('.level_drop').val()})
+			.done(function(data){
 				obj=JSON.parse(data);
-				$('.room_drop').empty();
 
 				for (i=0;i<obj.length;i++){
 					$('<option/>').val(obj[i]).html(obj[i]).appendTo('.room_drop');
 				}
 
-			}	
-	);
+			})
+			.fail(function(data){
+				$('.room_drop').empty();
+
+			});
+
 }
 
 

@@ -4,22 +4,36 @@ class Home extends CI_Controller {
 	function __construct(){
 		parent::__construct();
 		$this->check_isvalidated();
-		echo 'Congratulations, you are logged in.';
-		echo '<br /><a href='.base_url().'home/do_logout>Logout Fool!</a>';
+
 	}
 
 	public function index()
 	{
 
-		$this->c_panel('aq_levels');
+
+		echo '<br /><a href='.base_url().'home/do_logout>تسجيل الخروج</a>';
+		switch ($user_role)
+		{
+			case 'admin':
+				$this->c_panel('aq_levels');
+				break;
+
+			case 'user':
+				$this->c_panel('aq_levels');
+				break;
+
+			case 'teacher':
+				$this->c_panel('aq_tests');
+				break;
+		}
 	}
 	public function c_panel($table_data)
 	{
 		$data ['table_data'] = $table_data;
-		$this->load->view('home_header');
-		$this->load->view('home_content', $data);
-		$this->load->view('home_footer');
-		$this->load->view('home_addation');
+		$this->load->view('admin_header');
+		$this->load->view('admin_content', $data);
+		$this->load->view('admin_footer');
+		$this->load->view('admin_addation');
 	}
 	private function check_isvalidated(){
 		if(! $this->session->userdata('validated')){
@@ -85,7 +99,6 @@ class Home extends CI_Controller {
 		echo form_open('',$att);
 		echo '<p>المرحلة:'. form_dropdown('aqsa_level2',$levels).'</p>';
 		echo '<p>الصف:'. form_input('aqsa_class2','الأول').'</p>';
-		echo '<p>عدد الفصول'. form_input('class_dep_num2','5').'</p>';
 		echo '<p>'.form_submit('submit','إضافة').'</p>';
 		echo form_close();
 	}
