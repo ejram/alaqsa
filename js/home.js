@@ -78,6 +78,8 @@ $(document).ready(function()
 	form_submit('#test_insert_form','test_insert');
 	form_submit('#skill_insert_form','skill_insert');
 	form_submit('#user_insert_form','user_insert');
+	form_submit('#student_insert_form','student_insert');
+	form_submit('#report_insert_form','report_insert');
 
 
 

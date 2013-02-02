@@ -18,10 +18,14 @@
 <body>
 	<div id="navdiv">
 		<ul id="nav">
-			<?php 
+		<?php 
+		echo "<div class='logout_div'>";
+			echo 'أهلاً سيد:'.$this->session->userdata('user_name');
+			echo '<br /><a href='.base_url().'home/do_logout>تسجيل الخروج</a>';
+		echo '</div>';	 
 
 			$user_role=$this->session->userdata('user_role');
-			echo 'أهلاً سيد:'.$this->session->userdata('user_name');
+
 			switch($user_role)
 			{
 				case 'admin':
@@ -36,6 +40,10 @@
 			</li>
 			<li><a href="<?= base_url(); ?>Home/c_panel/aq_subjects"> المواد </a>
 			</li>
+			<li><a href="<?= base_url(); ?>Home/c_panel/aq_assign"> الإسناد </a>
+			</li>			
+			<li><a href="<?= base_url(); ?>Home/c_panel/aq_students"> الطلاب </a>
+			</li>				
 			<li><a href="<?= base_url(); ?>Home/c_panel/aq_tests"> المعايير </a>
 			</li>
 			<li><a href="<?= base_url(); ?>Home/c_panel/aq_skills"> المهارات </a>
