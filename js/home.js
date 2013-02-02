@@ -80,7 +80,16 @@ $(document).ready(function()
 	form_submit('#user_insert_form','user_insert');
 	form_submit('#student_insert_form','student_insert');
 	form_submit('#report_insert_form','report_insert');
-
+	form_submit('#permission_search_form','permission_search');
+	$('#permission_insert_form').submit(function()
+			{
+		$.post("http://localhost/alaqsa/Home/" + 'permission_insert',
+				$('#permission_insert_form').serialize(),
+				function(data){
+			alert(data);
+		});
+		return false;
+			})
 
 
 

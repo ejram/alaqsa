@@ -364,6 +364,48 @@
 			echo '<p>'.form_submit('submit','إضافة').'</p>';
 			echo form_close();
 			echo "</div>";
+			
+			echo "<div id='permission_search_div' style=''>";
+			echo '<p>'.'إضافة مستخدم:'.'</p>';
+			$att=array('id'=>'permission_search_form');
+			echo form_open('',$att);
+			echo '<p>اسم الدخول للمستخدم:'. form_input('user_search','').'</p>';
+
+			echo '<p>'.form_submit('submit','إضافة').'</p>';
+			echo form_close();
+			echo "</div>";			
+			
+			
+			
+			
+			
+			//permission form
+			echo "<div id='insert_permission_div' style=''>";
+			echo '<p>'.'إضافة صلاحيات:'.'</p>';
+			$att=array('id'=>'permission_insert_form');
+			echo form_open('',$att);
+			echo '<p>اسم الدخول للمستخدم:'. form_input('permit_username','').'</p>';
+			echo '<p> المرحلة:'. form_input('permit_level','').'</p>';
+			echo '<p> الصف:'. form_input('permit_class','').'</p>';
+			echo '<p>الفصل:'. form_input('permit_room','').'</p>';
+			echo '<p>المادة :'. form_input('permit_subject','').'</p>';
+			echo '<p>'.form_submit('submit','إضافة').'</p>';
+			echo form_close();
+			echo "</div>";			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 
 		}
 		

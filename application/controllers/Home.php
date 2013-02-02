@@ -107,16 +107,29 @@ class Home extends CI_Controller {
 	
 	}
 	
+	
+	//////////////////
+	public function permission_insert() {
+		$att1 = array(
+				'permit_username' 	=> $_POST ['permit_username'],
+				'permit_level'		=> $_POST ['permit_level'],
+				'permit_class'		=> $_POST ['permit_class'],
+				'permit_room'		=> $_POST ['permit_room'],
+				'permit_subject'	=> $_POST ['permit_subject']
+		);
+		$this->ins_query('aq_permissions',$att1);	
+	}
+	
 	//////////////////
 	public function report_insert() {
 		$att1 = array(
-				'report_name' 			=> $_POST ['report_name'],
+				'report_name' 		=> $_POST ['report_name'],
 				'report_level'		=> $_POST ['report_level'],
-				'report_class'	=> $_POST ['report_class'],
+				'report_class'		=> $_POST ['report_class'],
 				'report_room'		=> $_POST ['report_room'],
 				'report_subject'	=> $_POST ['report_subject'],
 				'report_test'		=> $_POST ['report_test'],
-				'report_skill'			=> $_POST ['report_skill']
+				'report_skill'		=> $_POST ['report_skill']
 		);
 		$this->ins_query('aq_reports',$att1);
 	
@@ -309,7 +322,24 @@ class Home extends CI_Controller {
 	}
 	
 	
+	//////////////
+	public function permission_search(){
+		$user_search = $_POST['user_search'];
+		$user = $this->Mhome->get_where('aq_permissions',array('permit_username'=>$user_search));
+		$i=0;
+		$json_data="";
+		if(!$user->result())
+		{
+			echo "false";
+			exit;
+		}
+
+			
+		echo $user;
 	
+	
+	
+	}	
 	
 	//////////////
 	public function level_classes(){
