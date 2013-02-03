@@ -49,6 +49,7 @@
 				echo form_hidden('hidden_item_id','teacher_id');
 				echo "<span id = 'teacher_add_button' class = 'aqsa_button'>إضافة معلم</span>";
 				break;
+
 			case 'aq_subjects':
 				$this->table->set_heading('<input type="checkbox"
 						name="subjects_check" value="all" />',
@@ -60,7 +61,7 @@
 			case 'aq_assign':
 				$this->table->set_heading('<input type="checkbox"
 						name="assign_check" value="all"/>',
-						'اسم المعلم','المادة','الفصل','تعديل'
+						'اسم المعلم','المرحلة','الصف','الفصل','المادة','تعديل'
 								);
 								echo form_hidden('hidden_table_name',$table_data);
 								echo form_hidden('hidden_item_id','assign_id');
@@ -79,15 +80,24 @@
 			case 'aq_tests':
 				$this->table->set_heading('<input type="checkbox"
 						name="tests_check" value="all" />',
-						'اسم المعيار','المادة','مجموع المهارات',
+						'اسم المعيار','المرحلة','الصف','المادة','مجموع المهارات',
 						'إضافة مهارة','تعديل المعيار'
 								);
 								echo form_hidden('hidden_table_name',$table_data);
 								echo form_hidden('hidden_item_id','test_id');
 								break;
+
+			case 'aq_permissions':
+				$this->table->set_heading('<input type="checkbox"
+						name="permissions_check" value="all" />',
+						'اسم المستخدم','المرحلة','الصف','الفصل','المادة','تعديل'
+								);
+								echo form_hidden('hidden_table_name',$table_data);
+								echo form_hidden('hidden_item_id','permit_id');
+								break;
 			case 'aq_skills':
 				$this->table->set_heading('<input type="checkbox"
-						name="skills_check" value="all" />' ,'اسم المهارة' ,'المعيار' ,'أقل درجة',
+						name="skills_check" value="all" />' ,'المرحلة','الصف','المادة','اسم المهارة' ,'المعيار' ,'أقل درجة',
 						'أعلى درجة','تعديل المهارة'
 								);
 								echo form_hidden('hidden_table_name',$table_data);
@@ -97,18 +107,18 @@
 				$this->table->set_heading('<input type="checkbox"
 						name="users_check" value="all" />','اسم المستخدم','اسم الدخول ','كلمة السر','البريد  الالكتروني'
 								,'الهاتف ','مسمى الوظيفة','تعديل المستخدم'
-								);
-								echo form_hidden('hidden_table_name',$table_data);
-								echo form_hidden('hidden_item_id','user_id');
-								break;
+										);
+										echo form_hidden('hidden_table_name',$table_data);
+										echo form_hidden('hidden_item_id','user_id');
+										break;
 			case 'aq_reports':
 				$this->table->set_heading('<input type="checkbox"
 						name="reports_check" value="all" />','اسم التقرير','المرحلة ','الصف','الفصل'
 								,'المادة ','المعيار','المهارة','تعديل'
-								);
-								echo form_hidden('hidden_table_name',$table_data);
-								echo form_hidden('hidden_item_id','user_id');
-								break;
+										);
+										echo form_hidden('hidden_table_name',$table_data);
+										echo form_hidden('hidden_item_id','report_id');
+										break;
 
 		}
 		$Q=$this->Mhome->Get_query_all($table_data);
@@ -173,7 +183,8 @@
 									);
 									break;
 				case 'aq_subjects':
-					$tests_num=$this->Mhome->get_where('aq_tests','test_subject',$row->subject_name);
+					$tests_num=$this->Mhome->get_where('aq_tests',array('test_subject'=>$row->subject_name,
+					'test_level'=>$row->subect_level,'test_class'=>$row->subject_class));
 					$this->table->add_row('<input type="checkbox"
 							name="check_list[]" value=\''. $row->subject_id .'\' />',
 							$row->subject_name,$row->subject_level,
@@ -185,8 +196,8 @@
 				case 'aq_assign':
 					$this->table->add_row('<input type="checkbox"
 							name="check_list[]" value=\''. $row->assign_id .'\' />',
-							$row->assign_teacher,$row->assign_subject,
-							$row->assign_room,
+							$row->assign_teacher,$row->assign_level,$row->assign_class,$row->assign_room,
+							$row->assign_subject,
 							'تعديل'
 									);
 									break;
@@ -205,22 +216,34 @@
 
 				case 'aq_tests':
 					$skills_num=$this->Mhome->get_where('aq_skills',
-					'skill_test',
-					$row->test_name);
+					array('skill_test'=>$row->test_name,'skill_level'=>$row->test_level,
+					'skill_class'=>$row->test_class,'skill_subject'=>$row->test_subject
+					));
 					$this->table->add_row('<input type="checkbox"
 							name="check_list[]" value=\''. $row->test_id .'\' />',
-							$row->test_name, $row->test_subject,
+							$row->test_name,$row->test_level,$row->test_class, $row->test_subject,
 							$skills_num->num_rows(),
 							anchor('#','+'),anchor('#','تعديل')
 					);
 
 					break;
+
+				case 'aq_permissions':
+					$this->table->add_row('<input type="checkbox"
+							name="check_list[]" value=\''. $row->permit_id .'\' />',
+							$row->permit_username,$row->permit_level,$row->permit_class,
+							$row->permit_room, $row->permit_subject, anchor('#','تعديل')
+					);
+
+					break;
+
 				case 'aq_skills':
 					$skill_query=$this->Mhome->get_where('aq_tests',
 					'test_name',
 					$row->skill_test);
 					$this->table->add_row('<input type="checkbox"
-							name="check_list[]" value=\''. $row->skill_id .'\' />',
+							name="check_list[]" value=\''. $row->skill_id .'\' />',$row->skill_level,
+							$row->skill_class,$row->skill_subject,
 							$row->skill_name,$row->skill_test, $row->min_grade,
 							$row->max_grade, anchor('#','تعديل')
 
@@ -322,6 +345,9 @@
 			$att=array('id'=>'test_insert_form');
 			echo form_open('',$att);
 			echo '<p>اسم المعيار:'. form_input('test_name','').'</p>';
+			echo '<p>المرحلة:'. form_input('test_level','').'</p>';
+			echo '<p>الصف:'. form_input('test_class','').'</p>';
+			echo '<p>الفصل:'. form_input('test_room','').'</p>';
 			echo '<p>المادة:'. form_input('test_subject','').'</p>';
 			echo '<p>'.form_submit('submit','إضافة').'</p>';
 			echo form_close();
@@ -338,6 +364,10 @@
 			echo form_open('',$att);
 			echo '<p>اسم المهارة:'. form_input('skill_name','').'</p>';
 			echo '<p>المعيار:'. form_input('skill_test','').'</p>';
+			echo '<p>المرحلة:'. form_input('skill_level','').'</p>';
+			echo '<p>الصف:'. form_input('skill_class','').'</p>';
+			echo '<p>الفصل:'. form_input('skill_room','').'</p>';
+			echo '<p>المادة:'. form_input('skill_subject','').'</p>';
 			echo '<p>أقل درجة:'. form_input('min_grade','').'</p>';
 			echo '<p>أعلى درجة:'. form_input('max_grade','').'</p>';
 
@@ -364,7 +394,13 @@
 			echo '<p>'.form_submit('submit','إضافة').'</p>';
 			echo form_close();
 			echo "</div>";
+
+		}
 			
+
+		//insert user form
+		if($table_data=='aq_permissions')
+		{
 			echo "<div id='permission_search_div' style=''>";
 			echo '<p>'.'إضافة مستخدم:'.'</p>';
 			$att=array('id'=>'permission_search_form');
@@ -373,12 +409,10 @@
 
 			echo '<p>'.form_submit('submit','إضافة').'</p>';
 			echo form_close();
-			echo "</div>";			
-			
-			
-			
-			
-			
+			echo "</div>";
+
+
+
 			//permission form
 			echo "<div id='insert_permission_div' style=''>";
 			echo '<p>'.'إضافة صلاحيات:'.'</p>';
@@ -391,25 +425,14 @@
 			echo '<p>المادة :'. form_input('permit_subject','').'</p>';
 			echo '<p>'.form_submit('submit','إضافة').'</p>';
 			echo form_close();
-			echo "</div>";			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+			echo "</div>";
+
+
+
 
 		}
-		
-		
+
+
 		//insert user form
 		if($table_data=='aq_reports')
 		{
@@ -427,8 +450,27 @@
 			echo '<p>'.form_submit('submit','إضافة').'</p>';
 			echo form_close();
 			echo "</div>";
-		
+
 		}
+
+		//insert assign form
+		if($table_data=='aq_assign')
+		{
+			echo "<div id='insert_assign_div' style=''>";
+			echo '<p>'.'إضافة تقرير:'.'</p>';
+			$att=array('id'=>'assign_insert_form');
+			echo form_open('',$att);
+			echo '<p>اسم المعلم:'. form_input('assign_teacher','').'</p>';
+			echo '<p>المرحلة:'. form_input('assign_level','').'</p>';
+			echo '<p>الصف:'. form_input('assign_class','').'</p>';
+			echo '<p>الفصل:'. form_input('assign_room','').'</p>';
+			echo '<p>المادة:'. form_input('assign_subject','').'</p>';
+			echo '<p>'.form_submit('submit','إضافة').'</p>';
+			echo form_close();
+			echo "</div>";
+
+		}
+
 
 		//insert student form
 		if($table_data=='aq_students')
@@ -517,6 +559,82 @@
 		echo form_dropdown('dropdown_name1',$classes,'','class="class_drop"');
 		echo form_dropdown('dropdown_name2',$rooms,'','class="room_drop"');
 	}
+
+
+	if($this->session->userdata('user_role')=='user')
+	{
+		$att = array('id' => 'table_form');
+		echo form_open('', $att);
+		$tmpl = array ( 'table_open'  => '<table class = "mytable"
+				cellpadding = "5" cellspacing = "3">'
+		);
+		$this->table->set_template($tmpl);
+		switch ($table_data)
+		{
+			case 'aq_tests':
+				$this->table->set_heading('<input type="checkbox"
+						name="tests_check" value="all" />',
+						'اسم المعيار','المرحلة','الصف','المادة','مجموع المهارات'
+						
+								);
+								echo form_hidden('hidden_table_name',$table_data);
+								echo form_hidden('hidden_item_id','test_id');
+								break;
+			case 'aq_skills':
+				$this->table->set_heading('<input type="checkbox"
+						name="skills_check" value="all" />' ,'المرحلة','الصف','المادة','اسم المهارة' ,'المعيار' ,'أقل درجة',
+						'أعلى درجة'
+								);
+								echo form_hidden('hidden_table_name',$table_data);
+								echo form_hidden('hidden_item_id','skill_id');
+								break;
+			default:
+				echo"";
+									
+									
+		}
+		$Q=$this->Mhome->Get_query_all($table_data);
+		foreach ($Q-> result() as $row){
+		switch($table_data)
+		{
+		case 'aq_tests':
+			$skills_num=$this->Mhome->get_where('aq_skills',
+			array('skill_test' => $row->test_name,'skill_level'=> $row->test_level,
+			'skill_class'=> $row->test_class,'skill_level'=> $row->test_level ));
+			$this->table->add_row('<input type="checkbox"
+							name="check_list[]" value=\''. $row->test_id .'\' />',
+					$row->test_name,$row->test_level,$row->test_class, $row->test_subject,
+					$skills_num->num_rows()
+			);
+		
+			break;
+		
+
+		
+		case 'aq_skills':
+			$skill_query=$this->Mhome->get_where('aq_tests',
+			'test_name',
+			$row->skill_test);
+			$this->table->add_row('<input type="checkbox"
+							name="check_list[]" value=\''. $row->skill_id .'\' />',$row->skill_level,
+					$row->skill_class,$row->skill_subject,
+					$row->skill_name,$row->skill_test, $row->min_grade,
+					$row->max_grade
+		
+			);
+		
+			break;	
+		default:
+			echo"";
+		}	
+
+		echo $this->table->generate();
+		echo form_close();
+		}
+	}
+
+
+
 
 	?>
 

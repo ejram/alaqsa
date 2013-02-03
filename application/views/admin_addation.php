@@ -125,6 +125,10 @@
 	echo form_close();
 	?>
 </div>
+
+
+
+
 <!-- modify_level_dialog to modify a level in the levels page -->
 <div id="level_modify_dialog" title="تعديل المرحلة">
 	<?php

@@ -32,6 +32,8 @@
 					?>
 			<li><a href="<?= base_url(); ?>Home/c_panel/aq_levels"> المراحل </a>
 			</li>
+			<li><a href="<?= base_url(); ?>Home/c_panel/aq_permissions"> إدارة السماحيات </a>
+			</li>			
 			<li><a href="<?= base_url(); ?>Home/c_panel/aq_classes"> الصفوف </a>
 			</li>
 			<li><a href="<?= base_url(); ?>Home/c_panel/aq_rooms"> الفصول </a>
@@ -55,26 +57,12 @@
 			<?php 
 			break;
 					case 'user':	?>
-			<li><a href="<?= base_url(); ?>Home/c_panel/aq_levels"> المراحل </a>
-			</li>
-			<li><a href="<?= base_url(); ?>Home/c_panel/aq_classes"> الصفوف </a>
-			</li>
-			<li><a href="<?= base_url(); ?>Home/c_panel/aq_rooms"> الفصول </a>
-			</li>
-			<li><a href="<?= base_url(); ?>Home/c_panel/aq_teachers"> المعلمين </a>
-			</li>
-			<li><a href="<?= base_url(); ?>Home/c_panel/aq_tests"> المعايير </a>
-			</li>
-			<li><a href="<?= base_url(); ?>Home/c_panel/aq_skills"> المهارات </a>
-				<?php
-				break;
-					case 'teacher': ?>
 			
 			<li><a href="<?= base_url(); ?>Home/c_panel/aq_tests"> المعايير </a>
 			</li>
 			<li><a href="<?= base_url(); ?>Home/c_panel/aq_skills"> المهارات </a>
-
-				<?php 
+			</li>
+				<?php
 				break;
 					
 			} ?>

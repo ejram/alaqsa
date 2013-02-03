@@ -81,6 +81,7 @@ $(document).ready(function()
 	form_submit('#student_insert_form','student_insert');
 	form_submit('#report_insert_form','report_insert');
 	form_submit('#permission_search_form','permission_search');
+	form_submit('#assign_insert_form','assign_insert');
 	$('#permission_insert_form').submit(function()
 			{
 		$.post("http://localhost/alaqsa/Home/" + 'permission_insert',
