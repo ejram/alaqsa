@@ -184,7 +184,7 @@
 									break;
 				case 'aq_subjects':
 					$tests_num=$this->Mhome->get_where('aq_tests',array('test_subject'=>$row->subject_name,
-					'test_level'=>$row->subect_level,'test_class'=>$row->subject_class));
+					'test_level'=>$row->subject_level,'test_class'=>$row->subject_class));
 					$this->table->add_row('<input type="checkbox"
 							name="check_list[]" value=\''. $row->subject_id .'\' />',
 							$row->subject_name,$row->subject_level,
@@ -347,7 +347,6 @@
 			echo '<p>اسم المعيار:'. form_input('test_name','').'</p>';
 			echo '<p>المرحلة:'. form_input('test_level','').'</p>';
 			echo '<p>الصف:'. form_input('test_class','').'</p>';
-			echo '<p>الفصل:'. form_input('test_room','').'</p>';
 			echo '<p>المادة:'. form_input('test_subject','').'</p>';
 			echo '<p>'.form_submit('submit','إضافة').'</p>';
 			echo form_close();
@@ -366,7 +365,6 @@
 			echo '<p>المعيار:'. form_input('skill_test','').'</p>';
 			echo '<p>المرحلة:'. form_input('skill_level','').'</p>';
 			echo '<p>الصف:'. form_input('skill_class','').'</p>';
-			echo '<p>الفصل:'. form_input('skill_room','').'</p>';
 			echo '<p>المادة:'. form_input('skill_subject','').'</p>';
 			echo '<p>أقل درجة:'. form_input('min_grade','').'</p>';
 			echo '<p>أعلى درجة:'. form_input('max_grade','').'</p>';
@@ -398,7 +396,7 @@
 		}
 			
 
-		//insert user form
+		//insert permission form
 		if($table_data=='aq_permissions')
 		{
 			echo "<div id='permission_search_div' style=''>";
@@ -563,6 +561,10 @@
 
 	if($this->session->userdata('user_role')=='user')
 	{
+
+		$user_name=$this->session->userdata('user_username');
+		$permit_query = $this->Mhome->get_where('aq_permissions',
+				array('permit_username'=>$user_name));
 		$att = array('id' => 'table_form');
 		echo form_open('', $att);
 		$tmpl = array ( 'table_open'  => '<table class = "mytable"
@@ -572,64 +574,72 @@
 		switch ($table_data)
 		{
 			case 'aq_tests':
-				$this->table->set_heading('<input type="checkbox"
-						name="tests_check" value="all" />',
-						'اسم المعيار','المرحلة','الصف','المادة','مجموع المهارات'
-						
-								);
-								echo form_hidden('hidden_table_name',$table_data);
-								echo form_hidden('hidden_item_id','test_id');
-								break;
+				$this->table->set_heading(
+				'اسم المعيار','المرحلة','الصف','المادة','مجموع المهارات'
+
+						);
+						echo form_hidden('hidden_table_name',$table_data);
+						echo form_hidden('hidden_item_id','test_id');
+						break;
 			case 'aq_skills':
-				$this->table->set_heading('<input type="checkbox"
-						name="skills_check" value="all" />' ,'المرحلة','الصف','المادة','اسم المهارة' ,'المعيار' ,'أقل درجة',
-						'أعلى درجة'
-								);
-								echo form_hidden('hidden_table_name',$table_data);
-								echo form_hidden('hidden_item_id','skill_id');
-								break;
+				$this->table->set_heading('المرحلة','الصف','المادة','اسم المهارة' ,'المعيار' ,'أقل درجة',
+				'أعلى درجة'
+						);
+						echo form_hidden('hidden_table_name',$table_data);
+						echo form_hidden('hidden_item_id','skill_id');
+						break;
 			default:
 				echo"";
-									
-									
+					
+					
 		}
-		$Q=$this->Mhome->Get_query_all($table_data);
-		foreach ($Q-> result() as $row){
-		switch($table_data)
+		foreach ($permit_query->result() as $row)
 		{
-		case 'aq_tests':
-			$skills_num=$this->Mhome->get_where('aq_skills',
-			array('skill_test' => $row->test_name,'skill_level'=> $row->test_level,
-			'skill_class'=> $row->test_class,'skill_level'=> $row->test_level ));
-			$this->table->add_row('<input type="checkbox"
-							name="check_list[]" value=\''. $row->test_id .'\' />',
-					$row->test_name,$row->test_level,$row->test_class, $row->test_subject,
-					$skills_num->num_rows()
-			);
-		
-			break;
-		
+			$permit_tests=$this->Mhome->get_where('aq_tests', array('test_level'=>$row->permit_level,
+					'test_class'=>$row->permit_class, 'test_subject'=>$row->permit_subject
+			));
+			foreach($permit_tests -> result() as $row1)
+				$skills_num=$this->Mhome->get_where('aq_skills',
+						array('skill_test' => $row1->test_name,'skill_level'=> $row1->test_level,
+								'skill_class'=> $row1->test_class ,'skill_subject'=>$row1->test_subject));
+			{
+				switch($table_data)
+				{
+					
+					case 'aq_tests':
+						$this->table->add_row($row1->test_name,$row1->test_level,$row1->test_class, $row1->test_subject,
+						$skills_num->num_rows()
+						);
+						break;
+						
+					case 'aq_skills':
+						foreach($skills_num-> result() as $row2)
+						{
+						
 
-		
-		case 'aq_skills':
-			$skill_query=$this->Mhome->get_where('aq_tests',
-			'test_name',
-			$row->skill_test);
-			$this->table->add_row('<input type="checkbox"
-							name="check_list[]" value=\''. $row->skill_id .'\' />',$row->skill_level,
-					$row->skill_class,$row->skill_subject,
-					$row->skill_name,$row->skill_test, $row->min_grade,
-					$row->max_grade
-		
-			);
-		
-			break;	
-		default:
-			echo"";
-		}	
+						
+						$this->table->add_row($row2->skill_level,
+								$row2->skill_class,$row2->skill_subject,
+								$row2->skill_name,$row2->skill_test, $row2->min_grade,
+								$row2->max_grade
 
-		echo $this->table->generate();
-		echo form_close();
+						);
+						}
+						break;
+					
+					case 'aq_marks':
+						
+						
+						
+						
+					default:
+						echo"";
+				}
+				
+				
+			}
+			echo $this->table->generate();
+			echo form_close();
 		}
 	}
 

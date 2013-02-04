@@ -62,6 +62,8 @@
 			</li>
 			<li><a href="<?= base_url(); ?>Home/c_panel/aq_skills"> المهارات </a>
 			</li>
+			<li><a href="<?= base_url(); ?>Home/c_panel/aq_marks"> الدرجات </a>
+			</li>
 				<?php
 				break;
 					

@@ -221,9 +221,7 @@ class Home extends CI_Controller {
 				'test_name' 			=> $_POST ['test_name'],
 				'test_subject'			=> $_POST ['test_subject'],
 				'test_level'			=> $_POST ['test_level'],
-				'test_class'			=> $_POST ['test_class'],
-				'test_room'				=> $_POST ['test_room']
-
+				'test_class'			=> $_POST ['test_class']
 		);
 		$this->ins_query('aq_tests',$att1);
 
@@ -237,7 +235,6 @@ class Home extends CI_Controller {
 				'skill_test'		=> $_POST ['skill_test'],
 				'skill_level'		=> $_POST ['skill_level'],
 				'skill_class'		=> $_POST ['skill_class'],
-				'skill_room'		=> $_POST ['skill_room'],
 				'skill_subject'		=> $_POST ['skill_subject'],
 				'min_grade'			=> $_POST ['min_grade'],
 				'max_grade'			=> $_POST ['max_grade']
