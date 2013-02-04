@@ -10,7 +10,7 @@ $(document).ready(function()
 				.done(function(data){
 					obj=JSON.parse(data);
 					$('.class_drop').empty();
-
+					$('<option/>').val('').html('اختر الصف').appendTo('.class_drop');
 					for (i=0;i<obj.length;i++){
 						$('<option/>').val(obj[i]).html(obj[i]).appendTo('.class_drop');
 					}

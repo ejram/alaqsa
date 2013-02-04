@@ -629,21 +629,18 @@
 					
 					case 'aq_marks':
 						
-						
-						
-						
 					default:
 						echo"";
 				}
 				
 				
 			}
-			echo $this->table->generate();
-			echo form_close();
+
 		}
 	}
 
-
+	echo $this->table->generate();
+	echo form_close();
 
 
 	?>

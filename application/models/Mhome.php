@@ -50,6 +50,7 @@ class Mhome extends CI_Model {
 
 	public function get_levels(){
 		$query=$this->db->get('aq_levels');
+		$levels['']='اختر المرحلة';
 		foreach ($query->result() as $row){
 			$levels[$row->level_name]=$row->level_name;
 
