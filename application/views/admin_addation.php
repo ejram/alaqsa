@@ -168,13 +168,13 @@
  										  'onClick' => '$(\'#room_modify_dialog\')
 											.dialog(\'close\');');
 		$room_hidden_past_id = array('id'  => 'hidden_past_room_id',
-		'name'=> 'hidden_past_room_name');
+		'name'=> 'hidden_past_room_name', 'style' => 'display:none;');
          echo '<p>'.'اسم  الفصل:'.'</p>';
          $att=array('id'=>'room_modify_form');
          $levels = $this->Mhome->get_levels();
-	$classes = array(''=>'');
-	$rooms = array(''=>'');
-	         echo form_open('',$att);
+         $classes = array(''=>'');
+         $rooms = array(''=>'');
+         echo form_open('',$att);
          echo '<p>المرحلة:'. form_dropdown('room_insert_level_name',$levels,'','class="level_drop"').'</p>';
          echo '<p>الصف:'. form_dropdown('room_insert_class_name',$classes,'','class="class_drop"').'</p>';
          echo '<p>الفصل:'. form_input('room_insert_name','').'</p>';
@@ -187,18 +187,40 @@
          echo form_close();
          ?>
 </div>
-<!-- Add teacher form -->
-<div id = "teacher_add_dialog" title="إضافة معلم">
+<!-- modify teacher dialog -->
+<div id="teacher_modify_dialog" title="تعديل بيانات معلم">
 
-<?php 
-$room_modify_cancel_att = array('id'      => 'room_modify_cancel_id',
-		'onClick' => '$(\'#room_modify_dialog\')
-											.dialog(\'close\');');
+	<?php 
+
+			$teacher_hidden_past_id = array('id'  => 'hidden_past_teacher_id',
+					'name'=> 'hidden_past_teachername', 'style' => 'display:none;');
+			echo '<p>'.'إضافة معلم:'.'</p>';
+			$att=array('id'=>'teacher_modify_form');
+			echo form_open('',$att);
+			echo '<p>اسم المعلم:'. form_input('teacher_name','').'</p>';
+			echo '<p>رقم الهوية:'. form_input('teacher_idnumber','').'</p>';
+			echo '<p>مكان الولادة:'. form_input('teacher_birthplace','').'</p>';
+			echo '<p>تاريخ الميلاد:'. form_input('teacher_birthdate','').' يوم-شهر-سنة </p>';
+			echo '<p>التخصص:'. form_input('teacher_specialist','').'</p>';
+			echo '<p>تاريخ التخرج:'. form_input('teacher_gradedate','').' يوم-شهر-سنة </p>';
+			echo '<p>المؤهل الدراسي:'. form_input('teacher_qual','').'</p>';
+			echo '<p>اسم الجامعة:'. form_input('teacher_university','').'</p>';
+			echo '<p>الجنسية:'. form_input('teacher_nationality','').'</p>';
+			echo '<p>إيميل المعلم:'. form_input('teacher_email','').'</p>';
+			echo '<p>جوال المعلم:'. form_input('teacher_mobile','').'</p>';
+			echo form_input($teacher_hidden_past_id);
+				
+			echo '<p>'.form_submit('submit','تعديل').'</p>';
+			echo form_close();
 
 
-?>
+
+			?>
 
 </div>
+
+
+
 </body>
 </html>
 

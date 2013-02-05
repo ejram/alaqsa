@@ -7,7 +7,7 @@
 		$att = array('id' => 'table_form');
 		echo form_open('', $att);
 		$tmpl = array ( 'table_open'  => '<table class = "mytable"
-				cellpadding = "5" cellspacing = "3">'
+				cellpadding = "8" cellspacing = "3">'
 		);
 		$this->table->set_template($tmpl);
 		switch ($table_data)
@@ -674,21 +674,21 @@
 		echo form_close();
 		
 		
-		//insert assign form
+		//insert mark form
 		if($table_data=='aq_marks')
 		{
 			echo "<div id='insert_mark_div' style=''>";
 			echo '<p>'.'إضافة درجة:'.'</p>';
 			$att=array('id'=>'mark_insert_form');
 			echo form_open('',$att);
-			echo '<p>المرحلة :'. form_input('assign_teacher','').'</p>';
-			echo '<p>الصف:'. form_input('assign_level','').'</p>';
-			echo '<p>الفصل:'. form_input('assign_level','').'</p>';
-			echo '<p>المادة:'. form_input('assign_level','').'</p>';
-			echo '<p>المعيار:'. form_input('assign_level','').'</p>';
-			echo '<p>المهارة:'. form_input('assign_class','').'</p>';
-			echo '<p>اسم الطالب:'. form_input('assign_room','').'</p>';
-			echo '<p>العلامة:'. form_input('assign_subject','').'</p>';
+			echo '<p>المرحلة :'. form_input('mark_level','').'</p>';
+			echo '<p>الصف:'. form_input('mark_class','').'</p>';
+			echo '<p>الفصل:'. form_input('mark_room','').'</p>';
+			echo '<p>المادة:'. form_input('mark_subject','').'</p>';
+			echo '<p>المعيار:'. form_input('mark_test','').'</p>';
+			echo '<p>المهارة:'. form_input('mark_skill','').'</p>';
+			echo '<p>اسم الطالب:'. form_input('mark_student','').'</p>';
+			echo '<p>العلامة:'. form_input('mark_value','').'</p>';
 			echo '<p>'.form_submit('submit','إضافة').'</p>';
 			echo form_close();
 			echo "</div>";

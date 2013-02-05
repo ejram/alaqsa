@@ -103,6 +103,22 @@ class Home extends CI_Controller {
 		$this->ins_query('aq_teachers', $att1);
 
 	}
+	
+	//////////////////
+	public function mark_insert() {
+		$att1 = array(
+				'mark_level' 	=> $_POST ['mark_level'],
+				'mark_class'	=> $_POST ['mark_class'],
+				'mark_room'		=> $_POST ['mark_room'],
+				'mark_subject'	=> $_POST ['mark_subject'],
+				'mark_test'		=> $_POST ['mark_test'],
+				'mark_skill'	=> $_POST ['mark_skill'],
+				'mark_student'	=> $_POST ['mark_student'],
+				'mark_value'	=> $_POST ['mark_value']
+		);
+		$this->ins_query('aq_marks', $att1);
+	
+	}
 
 
 	//////////////////
@@ -319,7 +335,6 @@ class Home extends CI_Controller {
 		$modify_att = array ('room_name' => $room_name, 'room_class' => $class_name, 'room_level' => $level_name);
 		$this->db->where('room_id', $room_past_name);
 		$this->db->update('aq_rooms', $modify_att);
-		echo "fd";
 	}
 
 
@@ -401,6 +416,14 @@ class Home extends CI_Controller {
 		echo json_encode($rooms, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
 	}
 
+	
+	//////////////////////////
+	public function get_teacher(){
+		$teacher_id = $_POST['teacher_id'];
+		$teacher_query = $this->Mhome->get_where('aq_teachers',array('teacher_id'=>$teacher_id));	
+		echo json_encode($teacher_query->result(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+
+	}
 
 
 }
