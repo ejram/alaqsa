@@ -468,6 +468,8 @@
 			echo "</div>";
 
 		}
+		
+
 
 
 		//insert student form
@@ -588,6 +590,14 @@
 						echo form_hidden('hidden_table_name',$table_data);
 						echo form_hidden('hidden_item_id','skill_id');
 						break;
+						
+						
+			case 'aq_marks':
+				$this->table->set_heading('المرحلة', 'الصف', 'الفصل', 'المادة', 'المعيار', 'المهارة', 'الطالب','العلامة'
+						);
+
+
+				break;
 			default:
 				echo"";
 					
@@ -628,7 +638,26 @@
 						break;
 					
 					case 'aq_marks':
+						$permit_marks=$this->Mhome->get_where('aq_marks', array('mark_level'=>$row->permit_level,
+								'mark_class'=>$row->permit_class, 'mark_subject'=>$row->permit_subject,
+								'mark_room' => $row->permit_room
+						));
 						
+						foreach($permit_marks -> result() as $row3)
+						{
+							$mark_st=$this->Mhome->get_where('aq_students', array('st_passnum'=>$row3->mark_student
+							));
+							foreach($mark_st->result() as $student_fn)
+						$this->table->add_row($row3->mark_level,
+								$row3->mark_class,$row3->mark_room,
+								$row3->mark_subject,$row3->mark_test, $row3->mark_skill,
+								$student_fn->st_fna . ' ' . $student_fn->st_ffna . ' ' . $student_fn->st_lna,
+								$row3->mark_value
+						
+						);
+						
+						}
+						break;
 					default:
 						echo"";
 				}
@@ -637,10 +666,38 @@
 			}
 
 		}
+		
+		
+
+		
+		echo $this->table->generate();
+		echo form_close();
+		
+		
+		//insert assign form
+		if($table_data=='aq_marks')
+		{
+			echo "<div id='insert_mark_div' style=''>";
+			echo '<p>'.'إضافة درجة:'.'</p>';
+			$att=array('id'=>'mark_insert_form');
+			echo form_open('',$att);
+			echo '<p>المرحلة :'. form_input('assign_teacher','').'</p>';
+			echo '<p>الصف:'. form_input('assign_level','').'</p>';
+			echo '<p>الفصل:'. form_input('assign_level','').'</p>';
+			echo '<p>المادة:'. form_input('assign_level','').'</p>';
+			echo '<p>المعيار:'. form_input('assign_level','').'</p>';
+			echo '<p>المهارة:'. form_input('assign_class','').'</p>';
+			echo '<p>اسم الطالب:'. form_input('assign_room','').'</p>';
+			echo '<p>العلامة:'. form_input('assign_subject','').'</p>';
+			echo '<p>'.form_submit('submit','إضافة').'</p>';
+			echo form_close();
+			echo "</div>";
+		
+		}
+		
 	}
 
-	echo $this->table->generate();
-	echo form_close();
+
 
 
 	?>

@@ -1,12 +1,14 @@
 //Main document ready
 $(document).ready(function()
 		{
+
 	put_classes();
 	put_rooms();
 	$('.level_drop').change(function()
 			{
+		Level_Name=$(this).val();
 		$.post("http://localhost/alaqsa/Home/" + 'level_classes',
-				{'level_name':$('.level_drop').val()})
+				{'level_name':Level_Name})
 				.done(function(data){
 					obj=JSON.parse(data);
 					$('.class_drop').empty();
@@ -21,12 +23,13 @@ $(document).ready(function()
 
 
 				});
-
+		Class_Name = $('.class_drop').val();
 		$.post("http://localhost/alaqsa/Home/" + 'class_rooms',
-				{'class_name':$('.class_drop').val(),'level_name':$('.level_drop').val()})
+				{'class_name':Class_Name,'level_name':Level_Name})
 				.done(function(data){
 					obj=JSON.parse(data);
 					$('.room_drop').empty();
+					$('<option/>').val('').html('اختر الفصل').appendTo('.room_drop');
 
 					for (i=0;i<obj.length;i++){
 						$('<option/>').val(obj[i]).html(obj[i]).appendTo('.room_drop');
@@ -41,12 +44,15 @@ $(document).ready(function()
 			});    
 	$('.class_drop').change(function()
 			{
-
+		Class_Name = $(this).val();
+		alert (Class_Name);
 		$.post("http://localhost/alaqsa/Home/" + 'class_rooms',
-				{'class_name':$('.class_drop').val(),'level_name':$('.level_drop').val()})
+				{'class_name':Class_Name,'level_name':Level_Name})
 				.done(function(data){
 					obj=JSON.parse(data);
 					$('.room_drop').empty();
+
+					$('<option/>').val('').html('اختر الفصل').appendTo('.room_drop');
 
 					for (i=0;i<obj.length;i++){
 						$('<option/>').val(obj[i]).html(obj[i]).appendTo('.room_drop');
@@ -213,6 +219,7 @@ function put_classes(){
 			.done(function(data){
 				obj=JSON.parse(data);
 				$('.class_drop').empty();
+				$('<option/>').val('').html('اختر الصف').appendTo('.class_drop');
 
 				for (i=0;i<obj.length;i++){
 					$('<option/>').val(obj[i]).html(obj[i]).appendTo('.class_drop');
@@ -233,6 +240,8 @@ function put_rooms(){
 			{'class_name':$('.class_drop').val(),'level_name':$('.level_drop').val()})
 			.done(function(data){
 				obj=JSON.parse(data);
+				$('.room_drop').empty();
+				$('<option/>').val('').html('اختر الفصل').appendTo('.room_drop');
 
 				for (i=0;i<obj.length;i++){
 					$('<option/>').val(obj[i]).html(obj[i]).appendTo('.room_drop');

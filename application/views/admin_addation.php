@@ -15,7 +15,7 @@
 	echo form_submit('submit','موافق');
 
 	$cancel_att=array('id'=>'cancel_id','name'=>'cancel_button',
-			'onClick'=>'$(\'#class_delete_dialog\').dialog(\'close\');');
+			'onClick'=>"$('#class_delete_dialog').dialog('close');");
 
 	echo form_button($cancel_att,'تراجع');
 
