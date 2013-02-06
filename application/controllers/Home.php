@@ -416,7 +416,50 @@ class Home extends CI_Controller {
 		echo json_encode($rooms, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
 	}
 
+	//////////////////////////
+	public function class_subjects(){
+		$level_name = $_POST['level_name'];
+		$class_name = $_POST['class_name'];
+		$this->db->select('subject_name');
+		$subject_query = $this->Mhome->get_where('aq_subjects',array('subject_class'=>$class_name,'subject_level'=>$level_name));
+		$i=0;
+		$json_data="";
+		if(!$subject_query->result())
+		{
+			echo "false";
+			exit;
+		}
+		foreach($subject_query->result() as $row){
+			$subjects[$i]=$row->subject_name;
+			$i++;
+		}
 	
+		echo json_encode($subjects, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+	}
+	
+
+	//////////////////////////
+	public function class_tests(){
+		$level_name = $_POST['level_name'];
+		$class_name = $_POST['class_name'];
+		$subject_name = $_POST['subject_name'];
+		$this->db->select('test_name');
+		$test_query = $this->Mhome->get_where('aq_tests',array('test_class'=>$class_name,
+				'test_level'=>$level_name, 'test_subject' => $subject_name));
+		$i=0;
+		$json_data="";
+		if(!$test_query->result())
+		{
+			echo "false";
+			exit;
+		}
+		foreach($test_query->result() as $row){
+			$tests[$i]=$row->test_name;
+			$i++;
+		}
+	
+		echo json_encode($tests, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+	}
 	//////////////////////////
 	public function get_teacher(){
 		$teacher_id = $_POST['teacher_id'];
@@ -426,4 +469,92 @@ class Home extends CI_Controller {
 	}
 
 
+	//////////////////
+	public function modify_teacher() {
+		$teacher_past_id = $_POST['hidden_past_teacher_name'];
+		$att1 = array(
+				'teacher_name' 			=> $_POST ['teacher_name'],
+				'teacher_idnumber'		=> $_POST ['teacher_idnumber'],
+				'teacher_birthplace'	=> $_POST ['teacher_birthplace'],
+				'teacher_birthdate'		=> $_POST ['teacher_birthdate'],
+				'teacher_specialist'	=> $_POST ['teacher_specialist'],
+				'teacher_gradedate'		=> $_POST ['teacher_gradedate'],
+				'teacher_qual'			=> $_POST ['teacher_qual'],
+				'teacher_university'	=> $_POST ['teacher_university'],
+				'teacher_nationality'	=> $_POST ['teacher_nationality'],
+				'teacher_email'			=> $_POST ['teacher_email'],
+				'teacher_mobile'		=> $_POST ['teacher_mobile']
+	
+		);
+		$this->db->where('teacher_id',$teacher_past_id);
+		$this->db->update('aq_teachers', $att1);	
+	}
+	
+	//////////////////////////
+	public function get_permission(){
+		$permit_id = $_POST['permit_id'];
+		$permission_query = $this->Mhome->get_where('aq_permission',array('permit_id'=>$permit_id));
+		echo json_encode($permission_query->result(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+	
+	}
+	
+	
+	//////////////////
+	public function modify_permission() {
+		$permission_past_id = $_POST['hidden_past_permission_name'];
+		$att1 = array(
+				'permit_username' 	=> $_POST ['permit_username'],
+				'permit_level'		=> $_POST ['permit_level'],
+				'permit_class'		=> $_POST ['permit_class'],
+				'permit_room'		=> $_POST ['permit_room'],
+				'permit_subject'	=> $_POST ['permit_subject']
+	
+		);
+		$this->db->where('permit_id',$permission_past_id);
+		$this->db->update('aq_permissions', $att1);
+	}
+	
+	//////////////////
+	public function modify_assign() {
+		$assign_past_id = $_POST['hidden_past_assign_name'];
+		$att1 = array(
+				'assign_teacher' 	=> $_POST ['assign_teacher'],
+				'assign_level'		=> $_POST ['assign_level'],
+				'assign_class'		=> $_POST ['assign_class'],
+				'assign_room'		=> $_POST ['assign_room'],
+				'assign_subject'	=> $_POST ['assign_subject']
+	
+		);
+		$this->db->where('assign_id',$assign_past_id);
+		$this->db->update('aq_assign', $att1);
+	}
+	
+	//////////////////
+	public function modify_test() {
+		$test_past_id = $_POST['hidden_past_test_name'];
+		$att1 = array(
+				'test_level'	=> $_POST ['test_level'],
+				'test_class'	=> $_POST ['test_class'],
+				'test_name'		=> $_POST ['test_name'],
+				'test_subject'	=> $_POST ['test_subject']
+	
+		);
+		$this->db->where('test_id',$test_past_id);
+		$this->db->update('aq_tests', $att1);
+	}
+	//////////////////
+	public function modify_subject() {
+		$subject_past_id = $_POST['hidden_past_subject_name'];
+		$att1 = array(
+				'subject_name' 		=> $_POST ['subject_name'],
+				'subject_level'		=> $_POST ['subject_level'],
+				'subject_class'		=> $_POST ['subject_class']
+	
+		);
+		$this->db->where('subject_id',$subject_past_id);
+		$this->db->update('aq_subjects', $att1);
+	}
+	
+	
+	
 }

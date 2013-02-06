@@ -67,6 +67,27 @@ class Mhome extends CI_Model {
 		return $classes;
 		 
 	}
+	
+	public function get_teachers(){
+		$query=$this->db->get('aq_teachers');
+		foreach ($query->result() as $row){
+			$teachers[$row->teacher_name]=$row->teacher_name;
+	
+		}
+		return $teachers;
+			
+	}	
+	
+	public function get_tests(){
+		$query=$this->db->get('aq_tests');
+		foreach ($query->result() as $row){
+			$tests[$row->test_name]=$row->test_name;
+	
+		}
+		return $tests;
+			
+	}
+	
 	public function get_rooms(){
 		$query=$this->db->get('aq_rooms');
 		foreach ($query->result() as $row){

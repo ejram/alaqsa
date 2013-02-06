@@ -189,7 +189,8 @@
 							name="check_list[]" value=\''. $row->subject_id .'\' />',
 							$row->subject_name,$row->subject_level,
 							$row->subject_class,$tests_num->num_rows(),
-							'تعديل'
+							'<span id = '.$row->subject_id.' class=\'modify_subject\'>
+							تعديل</span>'
 					);
 
 					break;
@@ -198,7 +199,8 @@
 							name="check_list[]" value=\''. $row->assign_id .'\' />',
 							$row->assign_teacher,$row->assign_level,$row->assign_class,$row->assign_room,
 							$row->assign_subject,
-							'تعديل'
+							'<span id = '.$row->assign_id.' class=\'modify_assign\'>
+									تعديل</span>'
 									);
 									break;
 
@@ -223,7 +225,8 @@
 							name="check_list[]" value=\''. $row->test_id .'\' />',
 							$row->test_name,$row->test_level,$row->test_class, $row->test_subject,
 							$skills_num->num_rows(),
-							anchor('#','+'),anchor('#','تعديل')
+							anchor('#','+'),'<span id = '.$row->test_id.' class=\'modify_test\'>
+							تعديل </span>'
 					);
 
 					break;
@@ -232,8 +235,9 @@
 					$this->table->add_row('<input type="checkbox"
 							name="check_list[]" value=\''. $row->permit_id .'\' />',
 							$row->permit_username,$row->permit_level,$row->permit_class,
-							$row->permit_room, $row->permit_subject, anchor('#','تعديل')
-					);
+							$row->permit_room, $row->permit_subject, '<span id = '
+									.$row->permit_id.' class=\'modify_permission\'> تعديل </span>'
+											);
 
 					break;
 
@@ -245,7 +249,8 @@
 							name="check_list[]" value=\''. $row->skill_id .'\' />',$row->skill_level,
 							$row->skill_class,$row->skill_subject,
 							$row->skill_name,$row->skill_test, $row->min_grade,
-							$row->max_grade, anchor('#','تعديل')
+							$row->max_grade, '<span id = '.$row->skill_id.' class=\'modify_skill\'>
+											تعديل </span>'
 
 					);
 
@@ -468,7 +473,7 @@
 			echo "</div>";
 
 		}
-		
+
 
 
 
@@ -590,8 +595,8 @@
 						echo form_hidden('hidden_table_name',$table_data);
 						echo form_hidden('hidden_item_id','skill_id');
 						break;
-						
-						
+
+
 			case 'aq_marks':
 				$this->table->set_heading('المرحلة', 'الصف', 'الفصل', 'المادة', 'المعيار', 'المهارة', 'الطالب','العلامة'
 						);
@@ -615,65 +620,65 @@
 			{
 				switch($table_data)
 				{
-					
+
 					case 'aq_tests':
 						$this->table->add_row($row1->test_name,$row1->test_level,$row1->test_class, $row1->test_subject,
 						$skills_num->num_rows()
 						);
 						break;
-						
+
 					case 'aq_skills':
 						foreach($skills_num-> result() as $row2)
 						{
-						
 
-						
-						$this->table->add_row($row2->skill_level,
-								$row2->skill_class,$row2->skill_subject,
-								$row2->skill_name,$row2->skill_test, $row2->min_grade,
-								$row2->max_grade
 
-						);
+
+							$this->table->add_row($row2->skill_level,
+									$row2->skill_class,$row2->skill_subject,
+									$row2->skill_name,$row2->skill_test, $row2->min_grade,
+									$row2->max_grade
+
+							);
 						}
 						break;
-					
+							
 					case 'aq_marks':
 						$permit_marks=$this->Mhome->get_where('aq_marks', array('mark_level'=>$row->permit_level,
-								'mark_class'=>$row->permit_class, 'mark_subject'=>$row->permit_subject,
-								'mark_room' => $row->permit_room
+						'mark_class'=>$row->permit_class, 'mark_subject'=>$row->permit_subject,
+						'mark_room' => $row->permit_room
 						));
-						
+
 						foreach($permit_marks -> result() as $row3)
 						{
 							$mark_st=$this->Mhome->get_where('aq_students', array('st_passnum'=>$row3->mark_student
 							));
 							foreach($mark_st->result() as $student_fn)
-						$this->table->add_row($row3->mark_level,
-								$row3->mark_class,$row3->mark_room,
-								$row3->mark_subject,$row3->mark_test, $row3->mark_skill,
-								$student_fn->st_fna . ' ' . $student_fn->st_ffna . ' ' . $student_fn->st_lna,
-								$row3->mark_value
-						
-						);
-						
+								$this->table->add_row($row3->mark_level,
+										$row3->mark_class,$row3->mark_room,
+										$row3->mark_subject,$row3->mark_test, $row3->mark_skill,
+										$student_fn->st_fna . ' ' . $student_fn->st_ffna . ' ' . $student_fn->st_lna,
+										$row3->mark_value
+
+								);
+
 						}
 						break;
 					default:
 						echo"";
 				}
-				
-				
+
+
 			}
 
 		}
-		
-		
 
-		
+
+
+
 		echo $this->table->generate();
 		echo form_close();
-		
-		
+
+
 		//insert mark form
 		if($table_data=='aq_marks')
 		{
@@ -692,9 +697,9 @@
 			echo '<p>'.form_submit('submit','إضافة').'</p>';
 			echo form_close();
 			echo "</div>";
-		
+
 		}
-		
+
 	}
 
 

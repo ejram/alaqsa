@@ -193,21 +193,13 @@
 	<?php 
 
 			$teacher_hidden_past_id = array('id'  => 'hidden_past_teacher_id',
-					'name'=> 'hidden_past_teachername', 'style' => 'display:none;');
-			echo '<p>'.'إضافة معلم:'.'</p>';
+											'name'=> 'hidden_past_teacher_name',
+											'style' => 'display:none;'
+											);
+			echo '<p>'.'تعديل بيانات معلم:'.'</p>';
 			$att=array('id'=>'teacher_modify_form');
 			echo form_open('',$att);
-			echo '<p>اسم المعلم:'. form_input('teacher_name','').'</p>';
-			echo '<p>رقم الهوية:'. form_input('teacher_idnumber','').'</p>';
-			echo '<p>مكان الولادة:'. form_input('teacher_birthplace','').'</p>';
-			echo '<p>تاريخ الميلاد:'. form_input('teacher_birthdate','').' يوم-شهر-سنة </p>';
-			echo '<p>التخصص:'. form_input('teacher_specialist','').'</p>';
-			echo '<p>تاريخ التخرج:'. form_input('teacher_gradedate','').' يوم-شهر-سنة </p>';
-			echo '<p>المؤهل الدراسي:'. form_input('teacher_qual','').'</p>';
-			echo '<p>اسم الجامعة:'. form_input('teacher_university','').'</p>';
-			echo '<p>الجنسية:'. form_input('teacher_nationality','').'</p>';
-			echo '<p>إيميل المعلم:'. form_input('teacher_email','').'</p>';
-			echo '<p>جوال المعلم:'. form_input('teacher_mobile','').'</p>';
+
 			echo form_input($teacher_hidden_past_id);
 				
 			echo '<p>'.form_submit('submit','تعديل').'</p>';
@@ -219,6 +211,168 @@
 
 </div>
 
+<!-- modify permission dialog -->
+<div id="permission_modify_dialog" title="تعديل سماحيات مستخدم">
+
+	<?php 
+
+			$permission_hidden_past_id = array('id'  => 'hidden_past_permission_id',
+											'name'=> 'hidden_past_permission_name',
+											'style' => 'display:none;'
+											);
+			echo '<p>'.'تعديل سماحيات مستخدم:'.'</p>';
+			$att=array('id'=>'permission_modify_form');
+			$levels = $this->Mhome->get_levels();
+			$begin_para = array(''=>'');
+			echo form_open('',$att);
+			echo '<p>المرحلة:'. form_dropdown('permit_level',$levels ,'','class="level_drop"').'</p>';
+			echo '<p>الصف:'. form_dropdown('permit_class',$begin_para ,'','class="class_drop"').'</p>';
+			echo '<p>الفصل:'. form_dropdown('permit_room',$begin_para ,'','class="room_drop"').'</p>';
+			echo '<p>المادة:'. form_dropdown('permit_subject',$begin_para,'','class="subject_drop"').'</p>';
+			echo '<p>اسم المستخدم:'. form_input('permit_username','').'</p>';
+			
+				
+			echo form_input($permission_hidden_past_id);
+				
+			echo '<p>'.form_submit('submit','تعديل').'</p>';
+			echo form_close();
+
+
+
+			?>
+
+</div>
+
+<!-- modify subject dialog -->
+<div id="subject_modify_dialog" title="تعديل بيانات مادة">
+
+	<?php 
+
+			$subject_hidden_past_id = array('id'  => 'hidden_past_subject_id',
+											'name'=> 'hidden_past_subject_name',
+											'style' => 'display:none;'
+											);
+			echo '<p>'.'تعديل بيانات مادة:'.'</p>';
+			$att=array('id'=>'subject_modify_form');
+			$levels = $this->Mhome->get_levels();
+			$begin_para = array(''=>'');
+			echo form_open('',$att);
+			echo '<p>المرحلة:'. form_dropdown('subject_level',$levels ,'','class="level_drop"').'</p>';
+			echo '<p>الصف:'. form_dropdown('subject_class',$begin_para ,'','class="class_drop"').'</p>';
+			echo '<p>المادة:'. form_input('subject_name','').'</p>';
+			
+				
+			echo form_input($subject_hidden_past_id);
+				
+			echo '<p>'.form_submit('submit','تعديل').'</p>';
+			echo form_close();
+
+
+
+			?>
+
+</div>
+
+<!-- modify test dialog -->
+<div id="test_modify_dialog" title="تعديل بيانات معيار">
+
+	<?php 
+
+			$test_hidden_past_id = array('id'  => 'hidden_past_test_id',
+											'name'=> 'hidden_past_test_name',
+											'style' => 'display:none;'
+											);
+			echo '<p>'.'تعديل بيانات معيار:'.'</p>';
+			$att=array('id'=>'test_modify_form');
+			$levels = $this->Mhome->get_levels();
+			$begin_para = array(''=>'');
+			echo form_open('',$att);
+			echo '<p>المرحلة:'. form_dropdown('test_level',$levels ,'','class="level_drop"').'</p>';
+			echo '<p>الصف:'. form_dropdown('test_class',$begin_para ,'','class="class_drop"').'</p>';
+			echo '<p>المادة:'. form_dropdown('test_subject',$begin_para,'','class="subject_drop"').'</p>';
+			echo '<p>المعيار:'. form_input('test_name','').'</p>';
+			
+				
+			echo form_input($test_hidden_past_id);
+				
+			echo '<p>'.form_submit('submit','تعديل').'</p>';
+			echo form_close();
+
+
+
+			?>
+
+</div>
+
+<!-- modify skill dialog -->
+<div id="skill_modify_dialog" title="تعديل بيانات معيار">
+
+	<?php 
+
+			$skill_hidden_past_id = array('id'  => 'hidden_past_skill_id',
+											'name'=> 'hidden_past_skill_name',
+											'style' => 'display:none;'
+											);
+			echo '<p>'.'تعديل بيانات معيار:'.'</p>';
+			$att=array('id'=>'skill_modify_form');
+			$levels = $this->Mhome->get_levels();
+			$tests = $this-> Mhome -> get_tests();
+			$begin_para = array(''=>'');
+			echo form_open('',$att);
+			echo '<p>المرحلة:'. form_dropdown('skill_level',$levels ,'','class="level_drop"').'</p>';
+			echo '<p>الصف:'. form_dropdown('skill_class',$begin_para ,'','class="class_drop"').'</p>';
+			echo '<p>المادة:'. form_dropdown('skill_subject',$begin_para,'','class="subject_drop"').'</p>';
+			echo '<p>المعيار:'. form_dropdown('skill_test',$begin_para ,'','class="test_drop"').'</p>';
+			echo '<p>المهارة:'. form_input('skill_name','').'</p>';
+			echo '<p>أقل درجة:'. form_input('min_grade','').'</p>';
+			echo '<p>أعلى درجة:'. form_input('max_grade','').'</p>';
+			
+				
+			echo form_input($test_hidden_past_id);
+				
+			echo '<p>'.form_submit('submit','تعديل').'</p>';
+			echo form_close();
+
+
+
+			?>
+
+</div>
+
+
+
+<!-- modify assign dialog -->
+<div id="assign_modify_dialog" title="تعديل إسناد المعلم">
+
+	<?php 
+
+			$assign_hidden_past_id = array('id'  => 'hidden_past_assign_id',
+											'name'=> 'hidden_past_assign_name',
+											'style' => 'display:none;'
+											);
+			echo '<p>'.'تعديل إسناد المعلم:'.'</p>';
+			$att=array('id'=>'assign_modify_form');
+			$levels = $this->Mhome->get_levels();
+			$teachers = $this-> Mhome -> get_teachers();
+			$begin_para = array(''=>'');
+			echo form_open('',$att);
+			echo '<p>المرحلة:'. form_dropdown('assign_level',$levels ,'','class="level_drop"').'</p>';
+			echo '<p>الصف:'. form_dropdown('assign_class',$begin_para ,'','class="class_drop"').'</p>';
+			echo '<p>الفصل:'. form_dropdown('assign_room',$begin_para ,'','class="room_drop"').'</p>';
+			echo '<p>المادة:'. form_dropdown('assign_subject',$begin_para,'','class="subject_drop"').'</p>';
+			echo '<p>اسم المعلم:'. form_dropdown('assign_teacher',$teachers,'','class=""').'</p>';
+			
+				
+			echo form_input($assign_hidden_past_id);
+				
+			echo '<p>'.form_submit('submit','تعديل').'</p>';
+			echo form_close();
+
+
+
+			?>
+
+</div>
 
 
 </body>

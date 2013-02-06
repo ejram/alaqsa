@@ -4,6 +4,10 @@ $(document).ready(function()
 
 	put_classes();
 	put_rooms();
+	$('.subject_drop').empty();
+
+	$('<option/>').val('').html('اختر المادة').appendTo('.subject_drop');
+
 	$('.level_drop').change(function()
 			{
 		Level_Name=$(this).val();
@@ -62,34 +66,80 @@ $(document).ready(function()
 					$('.room_drop').empty();
 
 				});
+		
+		$.post("http://localhost/alaqsa/Home/" + 'class_subjects',
+				{'class_name':Class_Name,'level_name':Level_Name})
+				.done(function(data){
+					obj=JSON.parse(data);
+					$('.subject_drop').empty();
 
-			}); 
+					$('<option/>').val('').html('اختر المادة').appendTo('.subject_drop');
+
+					for (i=0;i<obj.length;i++){
+						$('<option/>').val(obj[i]).html(obj[i]).appendTo('.subject_drop');
+					}
+
+				})
+				.fail(function(data){
+					$('.subject_drop').empty();
+
+				});
+		
+		$.post("http://localhost/alaqsa/Home/" + 'class_tests',
+				{'class_name':Class_Name,'level_name':Level_Name , 'subject_name':$('.subject_drop').val()})
+				.done(function(data){
+					obj=JSON.parse(data);
+					$('.test_drop').empty();
+
+					$('<option/>').val('').html('اختر المادة').appendTo('.test_drop');
+
+					for (i=0;i<obj.length;i++){
+						$('<option/>').val(obj[i]).html(obj[i]).appendTo('.test_drop');
+					}
+
+				})
+				.fail(function(data){
+					$('.test_drop').empty();
+
+				});
+
+			});
+
+	
 	Dialogload('#class_delete_dialog','.delete',400,'delete_input_id');
-
 	Dialogload('#class_delete_dialog','.delete_level_button',400,'delete_input_id');
+	Dialogload('#permission_modify_dialog','.modify_permission',400,'hidden_past_permission_id');
+	Dialogload('#subject_modify_dialog','.modify_subject',400,'hidden_past_subject_id');
+	Dialogload('#assign_modify_dialog','.modify_assign',400,'hidden_past_assign_id');
+	Dialogload('#test_modify_dialog','.modify_test',400,'hidden_past_test_id');
+	Dialogload('#skill_modify_dialog','.modify_skill',400,'hidden_past_skill_id');
+	
+	
+    var teacher_array = ['اسم المعلم','رقم الهوية','مكان الميلاد','تاريخ الميلاد','التخصص','تاريخ التخرج','المؤهل الدراسي','اسم الجامعة','الجنسية','إيميل المعلم','جوال المعلم'];	
+    
 	Dialogload('#teacher_modify_dialog','.modify_teacher',400,'hidden_past_teacher_id');
+	
 	$('.modify_teacher').click(function(){
 		$.post("http://localhost/alaqsa/Home/get_teacher",
 		{teacher_id:this.id},		
 		function(data){
 	        var jsonStr = JSON.stringify(data);
-
-alert(jsonStr);
-		
-	        /*   for(val in jsonStr)
-	       	{
-				$('#teacher_modify_dialog').append("<input type=text id='aa' name='ff' value='" + 'dfdf' + "' />");	
-
-				alert(val);
-			}
-			*/
-			
-		},"json");
-		
-		
-		
+	        jsonStr = jsonStr.replace('[','');
+	        jsonStr = jsonStr.replace(']','');
+	        var Obj = jQuery.parseJSON(jsonStr);
+	        delete Obj['teacher_id'];
+	        $('.teacher_class').remove();
+	        var j=0;
+	        $.each( Obj, function( key, value ) {
+	        	
+	        	$('#teacher_modify_form').append("<label class='teacher_class'>"+ teacher_array[j] + "</label>");
+				$('#teacher_modify_form').append("<input class='teacher_class' type=text name=" + key +" value=" + value + " />");	
+				j++;	
+	        });
+		},"json");		
 	});
 	
+
 	
 
 	form_submit('#level_insert_form','level_insert');
@@ -112,6 +162,11 @@ alert(jsonStr);
 	form_submit('#permission_search_form','permission_search');
 	form_submit('#assign_insert_form','assign_insert');
 	form_submit('#mark_insert_form','mark_insert');
+	form_submit('#teacher_modify_form','modify_teacher');
+	form_submit('#permission_modify_form','modify_permission');
+	form_submit('#subject_modify_form','modify_subject');
+	form_submit('#assign_modify_form','modify_assign');
+	form_submit('#test_modify_form','modify_test');
 
 
 
