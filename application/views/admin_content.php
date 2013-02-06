@@ -225,7 +225,8 @@
 							name="check_list[]" value=\''. $row->test_id .'\' />',
 							$row->test_name,$row->test_level,$row->test_class, $row->test_subject,
 							$skills_num->num_rows(),
-							anchor('#','+'),'<span id = '.$row->test_id.' class=\'modify_test\'>
+							'<span id = '.$row->test_id.' class=\'add_skill\'>
+							+ </span>', '<span id = '.$row->test_id.' class=\'modify_test\'>
 							تعديل </span>'
 					);
 
@@ -242,15 +243,13 @@
 					break;
 
 				case 'aq_skills':
-					$skill_query=$this->Mhome->get_where('aq_tests',
-					'test_name',
-					$row->skill_test);
+
 					$this->table->add_row('<input type="checkbox"
 							name="check_list[]" value=\''. $row->skill_id .'\' />',$row->skill_level,
 							$row->skill_class,$row->skill_subject,
 							$row->skill_name,$row->skill_test, $row->min_grade,
-							$row->max_grade, '<span id = '.$row->skill_id.' class=\'modify_skill\'>
-											تعديل </span>'
+							$row->max_grade,
+							 '<span id = '.$row->skill_id.' class=\'modify_skill\'>	تعديل </span>'
 
 					);
 
@@ -326,16 +325,27 @@
 
 		}
 
+		
+// 		$levels = $this->Mhome->get_levels();
+//		$begin_para = array(''=>'');
+
+// 		echo '<p>المرحلة:'. form_dropdown('assign_level',$levels ,'','class="level_drop"').'</p>';
+// 		echo '<p>الصف:'. form_dropdown('assign_class',$begin_para ,'','class="class_drop"').'</p>';
+// 		echo '<p>الفصل:'. form_dropdown('assign_room',$begin_para ,'','class="room_drop"').'</p>';
+// 		echo '<p>المادة:'. form_dropdown('assign_subject',$begin_para,'','class="subject_drop"').'</p>';
+// 		echo '<p>اسم المعلم:'. form_dropdown('assign_teacher',$teachers,'','class=""').'</p>';
 		//insert subject form
 		if($table_data=='aq_subjects')
 		{
+			$levels = $this->Mhome->get_levels();
+			$begin_para = array(''=>'');
 			echo "<div id='insert_subject_div' style=''>";
 			echo '<p>'.'إضافة مادة:'.'</p>';
 			$att=array('id'=>'subject_insert_form');
 			echo form_open('',$att);
 			echo '<p>اسم المادة:'. form_input('subject_name','').'</p>';
-			echo '<p>المرحلة:'. form_input('subject_level','').'</p>';
-			echo '<p>الصف:'. form_input('subject_class','').'</p>';
+			echo '<p>المرحلة:'. form_dropdown('subject_level',$levels ,'','class="level_drop"').'</p>';
+			echo '<p>الصف:'. form_dropdown('subject_class',$begin_para ,'','class="class_drop"').'</p>';
 			echo '<p>'.form_submit('submit','إضافة').'</p>';
 			echo form_close();
 			echo "</div>";
@@ -345,14 +355,16 @@
 		//insert test form
 		if($table_data=='aq_tests')
 		{
+			$levels = $this->Mhome->get_levels();
+			$begin_para = array(''=>'');
 			echo "<div id='insert_test_div' style=''>";
 			echo '<p>'.'إضافة معيار:'.'</p>';
 			$att=array('id'=>'test_insert_form');
 			echo form_open('',$att);
 			echo '<p>اسم المعيار:'. form_input('test_name','').'</p>';
-			echo '<p>المرحلة:'. form_input('test_level','').'</p>';
-			echo '<p>الصف:'. form_input('test_class','').'</p>';
-			echo '<p>المادة:'. form_input('test_subject','').'</p>';
+			echo '<p>المرحلة:'. form_dropdown('test_level',$levels ,'','class="level_drop"').'</p>';
+			echo '<p>الصف:'. form_dropdown('test_class',$begin_para ,'','class="class_drop"').'</p>';
+			echo '<p>المادة:'. form_dropdown('test_subject',$begin_para,'','class="subject_drop"').'</p>';
 			echo '<p>'.form_submit('submit','إضافة').'</p>';
 			echo form_close();
 			echo "</div>";
@@ -362,15 +374,17 @@
 		//insert skill form
 		if($table_data=='aq_skills')
 		{
+			$levels = $this->Mhome->get_levels();
+			$begin_para = array(''=>'');
 			echo "<div id='insert_skill_div' style=''>";
 			echo '<p>'.'إضافة مهارة:'.'</p>';
 			$att=array('id'=>'skill_insert_form');
 			echo form_open('',$att);
 			echo '<p>اسم المهارة:'. form_input('skill_name','').'</p>';
-			echo '<p>المعيار:'. form_input('skill_test','').'</p>';
-			echo '<p>المرحلة:'. form_input('skill_level','').'</p>';
-			echo '<p>الصف:'. form_input('skill_class','').'</p>';
-			echo '<p>المادة:'. form_input('skill_subject','').'</p>';
+			echo '<p>المرحلة:'. form_dropdown('skill_level',$levels ,'','class="level_drop"').'</p>';
+			echo '<p>الصف:'. form_dropdown('skill_class',$begin_para ,'','class="class_drop"').'</p>';
+			echo '<p>المادة:'. form_dropdown('skill_subject',$begin_para,'','class="subject_drop"').'</p>';
+			echo '<p>المعيار:'. form_dropdown('skill_test',$begin_para ,'','class="test_drop"').'</p>';
 			echo '<p>أقل درجة:'. form_input('min_grade','').'</p>';
 			echo '<p>أعلى درجة:'. form_input('max_grade','').'</p>';
 
@@ -393,7 +407,8 @@
 			echo '<p>إعادة كلمة السر:'. form_input('user_repassword','').'</p>';
 			echo '<p>البريد الإلكتروني:'. form_input('user_email','').'</p>';
 			echo '<p>الهاتف:'. form_input('user_mobile','').'</p>';
-			echo '<p>المسمى الوظيفي :'. form_input('user_role','').'</p>';
+			$role_array= array('admin'=>'مدير','user'=>'مستخدم');
+			echo '<p>المسمى الوظيفي :'. form_dropdown('user_role',$role_array).'</p>';
 			echo '<p>'.form_submit('submit','إضافة').'</p>';
 			echo form_close();
 			echo "</div>";
@@ -417,15 +432,20 @@
 
 
 			//permission form
+			$levels = $this->Mhome->get_levels();
+			$users = $this->Mhome->get_users();
+				
+			$begin_para = array(''=>'');
+
 			echo "<div id='insert_permission_div' style=''>";
 			echo '<p>'.'إضافة صلاحيات:'.'</p>';
 			$att=array('id'=>'permission_insert_form');
 			echo form_open('',$att);
-			echo '<p>اسم الدخول للمستخدم:'. form_input('permit_username','').'</p>';
-			echo '<p> المرحلة:'. form_input('permit_level','').'</p>';
-			echo '<p> الصف:'. form_input('permit_class','').'</p>';
-			echo '<p>الفصل:'. form_input('permit_room','').'</p>';
-			echo '<p>المادة :'. form_input('permit_subject','').'</p>';
+			echo '<p>اسم الدخول للمستخدم:'. form_dropdown('permit_username',$users).'</p>';
+			echo '<p>المرحلة:'. form_dropdown('permit_level',$levels ,'','class="level_drop"').'</p>';
+			echo '<p>الصف:'. form_dropdown('permit_class',$begin_para ,'','class="class_drop"').'</p>';
+			echo '<p>الفصل:'. form_dropdown('permit_room',$begin_para ,'','class="room_drop"').'</p>';
+			echo '<p>المادة:'. form_dropdown('permit_subject',$begin_para,'','class="subject_drop"').'</p>';
 			echo '<p>'.form_submit('submit','إضافة').'</p>';
 			echo form_close();
 			echo "</div>";

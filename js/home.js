@@ -5,6 +5,7 @@ $(document).ready(function()
 	put_classes();
 	put_rooms();
 	$('.subject_drop').empty();
+	$('.test_drop').empty();
 
 	$('<option/>').val('').html('اختر المادة').appendTo('.subject_drop');
 
@@ -105,6 +106,30 @@ $(document).ready(function()
 
 			});
 
+	$('.subject_drop').change(function()
+			{
+	
+		$.post("http://localhost/alaqsa/Home/" + 'class_tests',
+				{'class_name':Class_Name,'level_name':Level_Name , 'subject_name':$(this).val()})
+				.done(function(data){
+					obj=JSON.parse(data);
+					$('.test_drop').empty();
+
+					$('<option/>').val('').html('اختر المادة').appendTo('.test_drop');
+
+					for (i=0;i<obj.length;i++){
+						$('<option/>').val(obj[i]).html(obj[i]).appendTo('.test_drop');
+					}
+
+				})
+				.fail(function(data){
+					$('.test_drop').empty();
+
+				});
+		
+		
+			});
+
 	
 	Dialogload('#class_delete_dialog','.delete',400,'delete_input_id');
 	Dialogload('#class_delete_dialog','.delete_level_button',400,'delete_input_id');
@@ -113,11 +138,14 @@ $(document).ready(function()
 	Dialogload('#assign_modify_dialog','.modify_assign',400,'hidden_past_assign_id');
 	Dialogload('#test_modify_dialog','.modify_test',400,'hidden_past_test_id');
 	Dialogload('#skill_modify_dialog','.modify_skill',400,'hidden_past_skill_id');
+	Dialogload('#skill_add_dialog','.add_skill',400,'hidden_test_id');
 	
 	
     var teacher_array = ['اسم المعلم','رقم الهوية','مكان الميلاد','تاريخ الميلاد','التخصص','تاريخ التخرج','المؤهل الدراسي','اسم الجامعة','الجنسية','إيميل المعلم','جوال المعلم'];	
+    var user_array = ['اسم المستخدم','اسم الدخول للمستخدم','كلمة السر','البريد الإلكتروني','الهاتف','مسمى الوظيفة'];
     
 	Dialogload('#teacher_modify_dialog','.modify_teacher',400,'hidden_past_teacher_id');
+	Dialogload('#user_modify_dialog','.modify_user',400,'hidden_past_user_id');
 	
 	$('.modify_teacher').click(function(){
 		$.post("http://localhost/alaqsa/Home/get_teacher",
@@ -134,6 +162,26 @@ $(document).ready(function()
 	        	
 	        	$('#teacher_modify_form').append("<label class='teacher_class'>"+ teacher_array[j] + "</label>");
 				$('#teacher_modify_form').append("<input class='teacher_class' type=text name=" + key +" value=" + value + " />");	
+				j++;	
+	        });
+		},"json");		
+	});
+	
+	$('.modify_user').click(function(){
+		$.post("http://localhost/alaqsa/Home/get_user",
+		{user_id:this.id},		
+		function(data){
+	        var jsonStr = JSON.stringify(data);
+	        jsonStr = jsonStr.replace('[','');
+	        jsonStr = jsonStr.replace(']','');
+	        var Obj = jQuery.parseJSON(jsonStr);
+	        delete Obj['user_id'];
+	        $('.user_class').remove();
+	        var j=0;
+	        $.each( Obj, function( key, value ) {
+	        	
+	        	$('#user_modify_form').append("<label class='user_class'>"+ user_array[j] + "</label>");
+				$('#user_modify_form').append("<input class='user_class' type=text name=" + key +" value=" + value + " />");	
 				j++;	
 	        });
 		},"json");		
@@ -163,10 +211,13 @@ $(document).ready(function()
 	form_submit('#assign_insert_form','assign_insert');
 	form_submit('#mark_insert_form','mark_insert');
 	form_submit('#teacher_modify_form','modify_teacher');
+	form_submit('#user_modify_form','modify_user');
 	form_submit('#permission_modify_form','modify_permission');
 	form_submit('#subject_modify_form','modify_subject');
 	form_submit('#assign_modify_form','modify_assign');
 	form_submit('#test_modify_form','modify_test');
+	form_submit('#skill_modify_form','modify_skill');
+	form_submit('#skill_add_form','add_skill');
 
 
 

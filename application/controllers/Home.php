@@ -260,6 +260,30 @@ class Home extends CI_Controller {
 		$this->ins_query('aq_skills',$att1);
 
 	}
+	
+	
+	//////////////////
+	public function add_skill() {
+		$test_name= $_POST['hidden_test_name'];		
+		$test = $this->Mhome->get_where('aq_tests',array('test_id'=>'4'));
+foreach($test->result() as $row2)
+{
+	$att1 = array(
+				'skill_level' 	=> $row2->test_level,
+				'skill_class'	=> $row2->test_class,
+				'skill_subject'	=> $row2->test_subject,
+				'skill_test'	=> $row2->test_name,
+				'skill_name'	=> $_POST ['skill_name'],
+				'min_grade'		=> $_POST ['min_grade'],
+				'max_grade'		=> $_POST ['max_grade']
+				
+		
+		
+		);
+}		
+		$this->ins_query('aq_skills',$att1);
+	
+	}
 
 	//////////////////
 	public function user_insert() {
@@ -468,6 +492,13 @@ class Home extends CI_Controller {
 
 	}
 
+	//////////////////////////
+	public function get_user(){
+		$user_id = $_POST['user_id'];
+		$user_query = $this->Mhome->get_where('aq_users',array('user_id'=>$user_id));
+		echo json_encode($user_query->result(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+	
+	}
 
 	//////////////////
 	public function modify_teacher() {
@@ -490,6 +521,23 @@ class Home extends CI_Controller {
 		$this->db->update('aq_teachers', $att1);	
 	}
 	
+	
+	//////////////////
+	public function modify_user() {
+		$user_past_id = $_POST['hidden_past_user_name'];
+		$att1 = array(
+				'user_name' 		=> $_POST ['user_name'],
+				'user_username'		=> $_POST ['user_username'],
+				'user_password'		=> $_POST ['user_password'],
+				'user_email'		=> $_POST ['user_email'],
+				'user_mobile'		=> $_POST ['user_mobile'],
+				'user_role'			=> $_POST ['user_role']
+	
+		);
+		$this->db->where('user_id',$user_past_id);
+		$this->db->update('aq_users', $att1);
+	}
+	
 	//////////////////////////
 	public function get_permission(){
 		$permit_id = $_POST['permit_id'];
@@ -497,6 +545,7 @@ class Home extends CI_Controller {
 		echo json_encode($permission_query->result(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
 	
 	}
+	
 	
 	
 	//////////////////
@@ -542,6 +591,24 @@ class Home extends CI_Controller {
 		$this->db->where('test_id',$test_past_id);
 		$this->db->update('aq_tests', $att1);
 	}
+	
+	//////////////////
+	public function modify_skill() {
+		$skill_past_id = $_POST['hidden_past_skill_name'];
+		$att1 = array(
+				'skill_level'		=> $_POST ['skill_level'],
+				'skill_class'		=> $_POST ['skill_class'],
+				'skill_name'		=> $_POST ['skill_name'],
+				'skill_subject'		=> $_POST ['skill_subject'],
+				'skill_test'		=> $_POST ['skill_test'],
+				'min_grade'			=> $_POST ['min_grade'],
+				'max_grade'			=> $_POST ['max_grade']
+	
+		);
+		$this->db->where('skill_id',$skill_past_id);
+		$this->db->update('aq_skills', $att1);
+	}
+	
 	//////////////////
 	public function modify_subject() {
 		$subject_past_id = $_POST['hidden_past_subject_name'];

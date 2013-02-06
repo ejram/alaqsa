@@ -211,6 +211,30 @@
 
 </div>
 
+<!-- modify user dialog -->
+<div id="user_modify_dialog" title="تعديل بيانات مستخدم">
+
+	<?php 
+
+			$user_hidden_past_id = array('id'  => 'hidden_past_user_id',
+											'name'=> 'hidden_past_user_name',
+											'style' => 'display:none;'
+											);
+			echo '<p>'.'تعديل بيانات مستخدم'.'</p>';
+			$att=array('id'=>'user_modify_form');
+			echo form_open('',$att);
+
+			echo form_input($user_hidden_past_id);
+				
+			echo '<p>'.form_submit('submit','تعديل').'</p>';
+			echo form_close();
+
+
+
+			?>
+
+</div>
+
 <!-- modify permission dialog -->
 <div id="permission_modify_dialog" title="تعديل سماحيات مستخدم">
 
@@ -223,13 +247,14 @@
 			echo '<p>'.'تعديل سماحيات مستخدم:'.'</p>';
 			$att=array('id'=>'permission_modify_form');
 			$levels = $this->Mhome->get_levels();
+			$users = $this->Mhome->get_users();
 			$begin_para = array(''=>'');
 			echo form_open('',$att);
 			echo '<p>المرحلة:'. form_dropdown('permit_level',$levels ,'','class="level_drop"').'</p>';
 			echo '<p>الصف:'. form_dropdown('permit_class',$begin_para ,'','class="class_drop"').'</p>';
 			echo '<p>الفصل:'. form_dropdown('permit_room',$begin_para ,'','class="room_drop"').'</p>';
 			echo '<p>المادة:'. form_dropdown('permit_subject',$begin_para,'','class="subject_drop"').'</p>';
-			echo '<p>اسم المستخدم:'. form_input('permit_username','').'</p>';
+			echo '<p>اسم المستخدم:'. form_dropdown('permit_username',$users).'</p>';
 			
 				
 			echo form_input($permission_hidden_past_id);
@@ -319,6 +344,7 @@
 			$tests = $this-> Mhome -> get_tests();
 			$begin_para = array(''=>'');
 			echo form_open('',$att);
+			echo form_input($skill_hidden_past_id);
 			echo '<p>المرحلة:'. form_dropdown('skill_level',$levels ,'','class="level_drop"').'</p>';
 			echo '<p>الصف:'. form_dropdown('skill_class',$begin_para ,'','class="class_drop"').'</p>';
 			echo '<p>المادة:'. form_dropdown('skill_subject',$begin_para,'','class="subject_drop"').'</p>';
@@ -373,6 +399,28 @@
 			?>
 
 </div>
+
+<!-- add skill form dialog-->
+<div id="skill_add_dialog" title="إضافة مهارة">
+	<?php 
+	$test_hidden_id1 = array('id'  => 'hidden_test_id',
+			'name'=> 'hidden_test_name'
+	);
+
+	echo '<p>'.'إضافة مهارة:'.'</p>';
+	$att=array('id'=>'skill_add_form');
+	echo form_open('',$att);
+	echo form_input($test_hidden_id1);
+	echo '<p>اسم المهارة:'. form_input('skill_name','').'</p>';
+	echo '<p>أقل درجة:'. form_input('min_grade','').'</p>';
+	echo '<p>أعلى درجة:'. form_input('max_grade','').'</p>';
+	
+	echo '<p>'.form_submit('submit','إضافة').'</p>';
+	echo form_close();
+	?>
+</div>
+
+
 
 
 </body>

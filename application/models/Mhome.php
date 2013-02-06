@@ -58,6 +58,15 @@ class Mhome extends CI_Model {
 		return $levels;
 	}
 	 
+	public function get_users(){
+		$query=$this->db->get('aq_users');
+		$users['']='اختر مستخدم';
+		foreach ($query->result() as $row){
+			$users[$row->user_username]=$row->user_username;
+	
+		}
+		return $users;
+	}
 	public function get_classes(){
 		$query=$this->db->get('aq_classes');
 		foreach ($query->result() as $row){
