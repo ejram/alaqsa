@@ -484,6 +484,33 @@ foreach($test->result() as $row2)
 	
 		echo json_encode($tests, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
 	}
+	
+	//////////////////////////
+	public function test_skills(){
+		$level_name = $_POST['level_name'];
+		$class_name = $_POST['class_name'];
+		$subject_name = $_POST['subject_name'];
+		$test_name = $_POST['test_name'];
+		$this->db->select('skill_name');
+		$skill_query = $this->Mhome->get_where('aq_skills',array('skill_test'=>$test_name,
+				'skill_level'=>$level_name, 'skill_subject' => $subject_name, 'skill_class'=> $class_name));
+		$i=0;
+		$json_data="";
+		if(!$skill_query->result())
+		{
+			echo "false";
+			exit;
+		}
+		foreach($skill_query->result() as $row){
+			$skills[$i]=$row->skill_name;
+			$i++;
+		}
+	
+		echo json_encode($skills, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+	}
+	
+	
+	
 	//////////////////////////
 	public function get_teacher(){
 		$teacher_id = $_POST['teacher_id'];

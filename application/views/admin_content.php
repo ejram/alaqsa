@@ -459,17 +459,37 @@
 		//insert user form
 		if($table_data=='aq_reports')
 		{
+			$levels = $this->Mhome->get_levels();
+			$users = $this->Mhome->get_users();
+			
+			$begin_para = array(''=>'');
+				
 			echo "<div id='insert_report_div' style=''>";
 			echo '<p>'.'إضافة تقرير:'.'</p>';
 			$att=array('id'=>'report_insert_form');
 			echo form_open('',$att);
+			?>
+						<div id = "levelsdiv">
+			<?php 
+			foreach($levels as $level_check)
+			{
+				echo form_checkbox('levels_check', $level_check, FALSE) . $level_check ;
+			}
+			?>
+			</div>
+			<div id = "classesdiv"></div>
+			<div id = "roomsdiv"></div>
+			<div id = "subjectsdiv"></div>
+			<div id = "testsdiv"></div>
+			<?php 
+			echo '<p>المرحلة:'. form_dropdown('report_level',$levels ,'','class="level_drop"').'</p>';
+			echo '<p>الصف:'. form_dropdown('report_class',$begin_para ,'','class="class_drop"').'</p>';
+			echo '<p>الفصل:'. form_dropdown('report_room',$begin_para ,'','class="room_drop"').'</p>';
+			echo '<p>المادة:'. form_dropdown('report_subject',$begin_para,'','class="subject_drop"').'</p>';
+			echo '<p>المعيار:'. form_dropdown('report_test',$begin_para ,'','class="test_drop"').'</p>';
+			echo '<p>المهارة:'. form_dropdown('report_skill',$begin_para ,'','class="skill_drop"').'</p>';
+				
 			echo '<p>اسم التقرير:'. form_input('report_name','').'</p>';
-			echo '<p>المرحلة:'. form_input('report_level','').'</p>';
-			echo '<p>الصف :'. form_input('report_class','').'</p>';
-			echo '<p>الفصل:'. form_input('report_room','').'</p>';
-			echo '<p>المادة:'. form_input('report_subject','').'</p>';
-			echo '<p>المعيار:'. form_input('report_test','').'</p>';
-			echo '<p>المهارة  :'. form_input('report_skill','').'</p>';
 			echo '<p>'.form_submit('submit','إضافة').'</p>';
 			echo form_close();
 			echo "</div>";

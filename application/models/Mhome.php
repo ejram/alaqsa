@@ -50,7 +50,6 @@ class Mhome extends CI_Model {
 
 	public function get_levels(){
 		$query=$this->db->get('aq_levels');
-		$levels['']='اختر المرحلة';
 		foreach ($query->result() as $row){
 			$levels[$row->level_name]=$row->level_name;
 
@@ -96,6 +95,16 @@ class Mhome extends CI_Model {
 		return $tests;
 			
 	}
+	
+	public function get_skills(){
+		$query=$this->db->get('aq_skills');
+		foreach ($query->result() as $row){
+			$skills[$row->skill_name]=$row->skill_name;
+	
+		}
+		return $skills;
+			
+	}	
 	
 	public function get_rooms(){
 		$query=$this->db->get('aq_rooms');

@@ -1,13 +1,73 @@
 //Main document ready
 $(document).ready(function()
 		{
+	$('<option/>').val('').html('اختر المرحلة').prependTo('.level_drop');
 
 	put_classes();
 	put_rooms();
 	$('.subject_drop').empty();
 	$('.test_drop').empty();
 
-	$('<option/>').val('').html('اختر المادة').appendTo('.subject_drop');
+	$('<option/>').val('').html('اختر المادة').prependTo('.subject_drop');
+
+
+
+	$('#levelsdiv input').click(function(){
+		if($(this).is(':checked'))
+		{
+			Level_Name=$(this).val();
+			$.post("http://localhost/alaqsa/Home/" + 'level_classes',
+					{'level_name':Level_Name})
+					.done(function(data){
+						obj=JSON.parse(data);
+						$("<ul class='"+Level_Name+"'></ul>").appendTo('#classesdiv');
+
+						for (i=0;i<obj.length;i++){
+							$("<li class='class_option'><input type='checkbox' value='"+obj[i]+"' >"+ obj[i] +"</input></li>").appendTo('.'+Level_Name);
+						}
+
+					})
+					.fail(function(){
+						$('.'+Level_Name).remove();
+
+
+					});
+		}
+		else{
+			$('.'+Level_Name).remove();
+			$('.'+)
+	
+		}
+
+	});
+	$('#classesdiv input').click(function(){
+		if($(this).is(':checked'))
+		{
+			Level_Name=$(this).val();
+			$.post("http://localhost/alaqsa/Home/" + 'level_classes',
+					{'level_name':Level_Name})
+					.done(function(data){
+						obj=JSON.parse(data);
+						$("<ul class='"+Level_Name+"'></ul>").appendTo('#classesdiv');
+
+						for (i=0;i<obj.length;i++){
+							$("<li class='class_option'><input type='checkbox' value='"+obj[i]+"' >"+ obj[i] +"</input></li>").appendTo('.'+Level_Name);
+						}
+
+					})
+					.fail(function(){
+						$('.'+Level_Name).remove();
+
+
+					});
+		}
+		else{
+			$('.'+Level_Name).remove();
+	
+		}
+
+	});
+
 
 	$('.level_drop').change(function()
 			{
@@ -67,7 +127,7 @@ $(document).ready(function()
 					$('.room_drop').empty();
 
 				});
-		
+
 		$.post("http://localhost/alaqsa/Home/" + 'class_subjects',
 				{'class_name':Class_Name,'level_name':Level_Name})
 				.done(function(data){
@@ -85,7 +145,7 @@ $(document).ready(function()
 					$('.subject_drop').empty();
 
 				});
-		
+
 		$.post("http://localhost/alaqsa/Home/" + 'class_tests',
 				{'class_name':Class_Name,'level_name':Level_Name , 'subject_name':$('.subject_drop').val()})
 				.done(function(data){
@@ -108,7 +168,7 @@ $(document).ready(function()
 
 	$('.subject_drop').change(function()
 			{
-	
+
 		$.post("http://localhost/alaqsa/Home/" + 'class_tests',
 				{'class_name':Class_Name,'level_name':Level_Name , 'subject_name':$(this).val()})
 				.done(function(data){
@@ -126,11 +186,38 @@ $(document).ready(function()
 					$('.test_drop').empty();
 
 				});
-		
-		
+
+
 			});
 
-	
+	$('.test_drop').change(function()
+			{
+
+		$.post("http://localhost/alaqsa/Home/" + 'test_skills',
+				{'class_name':Class_Name,'level_name':Level_Name ,
+			'subject_name':$('.subject_drop').val(),
+			'test_name': $(this).val()
+				})
+				.done(function(data){
+					obj=JSON.parse(data);
+					$('.skill_drop').empty();
+
+					$('<option/>').val('').html('اختر المادة').appendTo('.skill_drop');
+
+					for (i=0;i<obj.length;i++){
+						$('<option/>').val(obj[i]).html(obj[i]).appendTo('.skill_drop');
+					}
+
+				})
+				.fail(function(data){
+					$('.skill_drop').empty();
+
+				});
+
+
+			});
+
+
 	Dialogload('#class_delete_dialog','.delete',400,'delete_input_id');
 	Dialogload('#class_delete_dialog','.delete_level_button',400,'delete_input_id');
 	Dialogload('#permission_modify_dialog','.modify_permission',400,'hidden_past_permission_id');
@@ -139,56 +226,56 @@ $(document).ready(function()
 	Dialogload('#test_modify_dialog','.modify_test',400,'hidden_past_test_id');
 	Dialogload('#skill_modify_dialog','.modify_skill',400,'hidden_past_skill_id');
 	Dialogload('#skill_add_dialog','.add_skill',400,'hidden_test_id');
-	
-	
-    var teacher_array = ['اسم المعلم','رقم الهوية','مكان الميلاد','تاريخ الميلاد','التخصص','تاريخ التخرج','المؤهل الدراسي','اسم الجامعة','الجنسية','إيميل المعلم','جوال المعلم'];	
-    var user_array = ['اسم المستخدم','اسم الدخول للمستخدم','كلمة السر','البريد الإلكتروني','الهاتف','مسمى الوظيفة'];
-    
+
+
+	var teacher_array = ['اسم المعلم','رقم الهوية','مكان الميلاد','تاريخ الميلاد','التخصص','تاريخ التخرج','المؤهل الدراسي','اسم الجامعة','الجنسية','إيميل المعلم','جوال المعلم'];	
+	var user_array = ['اسم المستخدم','اسم الدخول للمستخدم','كلمة السر','البريد الإلكتروني','الهاتف','مسمى الوظيفة'];
+
 	Dialogload('#teacher_modify_dialog','.modify_teacher',400,'hidden_past_teacher_id');
 	Dialogload('#user_modify_dialog','.modify_user',400,'hidden_past_user_id');
-	
+
 	$('.modify_teacher').click(function(){
 		$.post("http://localhost/alaqsa/Home/get_teacher",
-		{teacher_id:this.id},		
-		function(data){
-	        var jsonStr = JSON.stringify(data);
-	        jsonStr = jsonStr.replace('[','');
-	        jsonStr = jsonStr.replace(']','');
-	        var Obj = jQuery.parseJSON(jsonStr);
-	        delete Obj['teacher_id'];
-	        $('.teacher_class').remove();
-	        var j=0;
-	        $.each( Obj, function( key, value ) {
-	        	
-	        	$('#teacher_modify_form').append("<label class='teacher_class'>"+ teacher_array[j] + "</label>");
-				$('#teacher_modify_form').append("<input class='teacher_class' type=text name=" + key +" value=" + value + " />");	
-				j++;	
-	        });
-		},"json");		
+				{teacher_id:this.id},		
+				function(data){
+					var jsonStr = JSON.stringify(data);
+					jsonStr = jsonStr.replace('[','');
+					jsonStr = jsonStr.replace(']','');
+					var Obj = jQuery.parseJSON(jsonStr);
+					delete Obj['teacher_id'];
+					$('.teacher_class').remove();
+					var j=0;
+					$.each( Obj, function( key, value ) {
+
+						$('#teacher_modify_form').append("<label class='teacher_class'>"+ teacher_array[j] + "</label>");
+						$('#teacher_modify_form').append("<input class='teacher_class' type=text name=" + key +" value=" + value + " />");	
+						j++;	
+					});
+				},"json");		
 	});
-	
+
 	$('.modify_user').click(function(){
 		$.post("http://localhost/alaqsa/Home/get_user",
-		{user_id:this.id},		
-		function(data){
-	        var jsonStr = JSON.stringify(data);
-	        jsonStr = jsonStr.replace('[','');
-	        jsonStr = jsonStr.replace(']','');
-	        var Obj = jQuery.parseJSON(jsonStr);
-	        delete Obj['user_id'];
-	        $('.user_class').remove();
-	        var j=0;
-	        $.each( Obj, function( key, value ) {
-	        	
-	        	$('#user_modify_form').append("<label class='user_class'>"+ user_array[j] + "</label>");
-				$('#user_modify_form').append("<input class='user_class' type=text name=" + key +" value=" + value + " />");	
-				j++;	
-	        });
-		},"json");		
-	});
-	
+				{user_id:this.id},		
+				function(data){
+					var jsonStr = JSON.stringify(data);
+					jsonStr = jsonStr.replace('[','');
+					jsonStr = jsonStr.replace(']','');
+					var Obj = jQuery.parseJSON(jsonStr);
+					delete Obj['user_id'];
+					$('.user_class').remove();
+					var j=0;
+					$.each( Obj, function( key, value ) {
 
-	
+						$('#user_modify_form').append("<label class='user_class'>"+ user_array[j] + "</label>");
+						$('#user_modify_form').append("<input class='user_class' type=text name=" + key +" value=" + value + " />");	
+						j++;	
+					});
+				},"json");		
+	});
+
+
+
 
 	form_submit('#level_insert_form','level_insert');
 	form_submit('#table_form','del_class');
@@ -222,171 +309,192 @@ $(document).ready(function()
 
 
 
-		$('#permission_insert_form').submit(function()
-				{
-			$.post("http://localhost/alaqsa/Home/" + 'permission_insert',
-					$('#permission_insert_form').serialize(),
-					function(data){
-				alert(data);
+	$('#permission_insert_form').submit(function()
+			{
+		$.post("http://localhost/alaqsa/Home/" + 'permission_insert',
+				$('#permission_insert_form').serialize(),
+				function(data){
+			alert(data);
+		});
+		return false;
+			})
+
+
+
+			//open dialog for adding class.
+			$( '#add_class_dialog' ).dialog( {autoOpen: false, draggable: false,
+				modal: true, resizable: false,
+				show: { effect: 'drop', direction: "up" } ,
+				width: 400 
 			});
-			return false;
-				})
 
+	$('.add_class_button').click(function(){ 
+		$('#add_class_dialog').dialog('open');
+		return false;
+	});
 
+	//open dialog for adding room.
+	$( '#room_insert_dialog' ).dialog( {autoOpen: false, draggable: false,
+		modal: true, resizable: false,
+		show: { effect: 'drop', direction: "up" } ,
+		width: 600 
+	});
 
-				//open dialog for adding class.
-				$( '#add_class_dialog' ).dialog( {autoOpen: false, draggable: false,
-					modal: true, resizable: false,
-					show: { effect: 'drop', direction: "up" } ,
-					width: 400 
-				});
-
-		$('.add_class_button').click(function(){ 
-			$('#add_class_dialog').dialog('open');
-			return false;
-		});
-
-		//open dialog for adding room.
-		$( '#room_insert_dialog' ).dialog( {autoOpen: false, draggable: false,
-			modal: true, resizable: false,
-			show: { effect: 'drop', direction: "up" } ,
-			width: 600 
-		});
-
-		$('.insert_room_button').click(function(){ 
-			$('#room_insert_dialog').dialog('open');
-			return false;
-		});
-
-
-
-		//open dialog to modify a class.
-		$('#class_modify_dialog').dialog( { autoOpen: false, draggable: false,
-			modal: true, resizable: false,
-			show: { effect: 'drop', direction: "up" } ,
-			width: 400 } );
-		$('.modify_class').click(function(){    	
-
-			document.getElementById('hidden_past_class_id').value=this.id;
-
-			$('#class_modify_dialog').dialog('open');
-			return false;
-		}); 
-
-
-		//open dialog to modify a class.
-		$('#room_modify_dialog').dialog( { autoOpen: false, draggable: false,
-			modal: true, resizable: false,
-			show: { effect: 'drop', direction: "up" } ,
-			width: 400 } );
-		$('.modify_room').click(function(){    	
-
-			document.getElementById('hidden_past_room_id').value=this.id;
-
-			$('#room_modify_dialog').dialog('open');
-			return false;
-		}); 
-
-		//open dialog to modify a level.
-		$('#level_modify_dialog').dialog( { autoOpen: false, draggable: false,
-			modal: true, resizable: false,
-			show: { effect: 'drop', direction: "up" } ,
-			width: 400 } );
-		$('.modify_level_button').click(function(){    	
-
-			document.getElementById('hidden_past_level_id').value=this.id;
-
-			$('#level_modify_dialog').dialog('open');
-			return false;
-		});
-
-
-		//open dialog to insert a new room.
-		$('#room_insert_dialog').dialog({autoOpen: false, draggable: false,
-			modal: true, resizable: false,
-			show: { effect: 'drop', direction: "up" } ,
-			width: 400 } );
-		$('.insert_room').click(function(){    	
-			document.getElementById('hidden_past_class_id').value=this.id;
-			$('#class_modify_dialog').dialog('open');
-			return false;
-		});    
-
+	$('.insert_room_button').click(function(){ 
+		$('#room_insert_dialog').dialog('open');
+		return false;
 	});
 
 
 
-//	Open dialog function
-	function Dialogload(dest,butt,Dwidth,hidden_element)
-	{
-		$( dest ).dialog( { autoOpen: false, draggable: false,
-			modal: true, resizable: false,
-			show: { effect: 'drop', direction: "up" } ,
-			width: Dwidth } );
+	//open dialog to modify a class.
+	$('#class_modify_dialog').dialog( { autoOpen: false, draggable: false,
+		modal: true, resizable: false,
+		show: { effect: 'drop', direction: "up" } ,
+		width: 400 } );
+	$('.modify_class').click(function(){    	
 
-		$(butt).click(function(){
-			var element=document.getElementById(hidden_element);
-			element.value=this.id;   
-			$(dest).dialog('open');
-			return false;
+		document.getElementById('hidden_past_class_id').value=this.id;
+
+		$('#class_modify_dialog').dialog('open');
+		return false;
+	}); 
+
+
+	//open dialog to modify a class.
+	$('#room_modify_dialog').dialog( { autoOpen: false, draggable: false,
+		modal: true, resizable: false,
+		show: { effect: 'drop', direction: "up" } ,
+		width: 400 } );
+	$('.modify_room').click(function(){    	
+
+		document.getElementById('hidden_past_room_id').value=this.id;
+
+		$('#room_modify_dialog').dialog('open');
+		return false;
+	}); 
+
+	//open dialog to modify a level.
+	$('#level_modify_dialog').dialog( { autoOpen: false, draggable: false,
+		modal: true, resizable: false,
+		show: { effect: 'drop', direction: "up" } ,
+		width: 400 } );
+	$('.modify_level_button').click(function(){    	
+
+		document.getElementById('hidden_past_level_id').value=this.id;
+
+		$('#level_modify_dialog').dialog('open');
+		return false;
+	});
+
+
+	//open dialog to insert a new room.
+	$('#room_insert_dialog').dialog({autoOpen: false, draggable: false,
+		modal: true, resizable: false,
+		show: { effect: 'drop', direction: "up" } ,
+		width: 400 } );
+	$('.insert_room').click(function(){    	
+		document.getElementById('hidden_past_class_id').value=this.id;
+		$('#class_modify_dialog').dialog('open');
+		return false;
+	});    
+
 		});
-	}
-	function form_submit(submit_form,submit_dest)
-	{
 
-		$(submit_form).submit(function()
-				{
-			$.post("http://localhost/alaqsa/Home/" + submit_dest,
-					$(submit_form).serialize(),
-					function(data){
-				window.location.reload(true);
+
+
+//Open dialog function
+function Dialogload(dest,butt,Dwidth,hidden_element)
+{
+	$( dest ).dialog( { autoOpen: false, draggable: false,
+		modal: true, resizable: false,
+		show: { effect: 'drop', direction: "up" } ,
+		width: Dwidth } );
+
+	$(butt).click(function(){
+		var element=document.getElementById(hidden_element);
+		element.value=this.id;   
+		$(dest).dialog('open');
+		return false;
+	});
+}
+function form_submit(submit_form,submit_dest)
+{
+
+	$(submit_form).submit(function()
+			{
+		$.post("http://localhost/alaqsa/Home/" + submit_dest,
+				$(submit_form).serialize(),
+				function(data){
+			window.location.reload(true);
+		});
+		return false;
+			})
+
+}
+
+
+function put_classes(){
+	$.post("http://localhost/alaqsa/Home/" + 'level_classes',
+			{'level_name':$('.level_drop').val()})
+			.done(function(data){
+				obj=JSON.parse(data);
+				$('.class_drop').empty();
+				$('<option/>').val('').html('اختر الصف').appendTo('.class_drop');
+
+				for (i=0;i<obj.length;i++){
+					$('<option/>').val(obj[i]).html(obj[i]).appendTo('.class_drop');
+				}
+
+			})
+			.fail(function(){
+				$('.class_drop').empty();
+
+
 			});
-			return false;
-				})
-
-	}
 
 
-	function put_classes(){
+
+}
+function put_rooms(){
+	$.post("http://localhost/alaqsa/Home/" + 'class_rooms',
+			{'class_name':$('.class_drop').val(),'level_name':$('.level_drop').val()})
+			.done(function(data){
+				obj=JSON.parse(data);
+				$('.room_drop').empty();
+				$('<option/>').val('').html('اختر الفصل').appendTo('.room_drop');
+
+				for (i=0;i<obj.length;i++){
+					$('<option/>').val(obj[i]).html(obj[i]).appendTo('.room_drop');
+				}
+
+			})
+			.fail(function(data){
+				$('.room_drop').empty();
+
+			});
+
+}
+
+
+function updateTextArea() {         
+	$('#levelsdiv :checked').each(function() {
+		Level_Name=$(this).val();
 		$.post("http://localhost/alaqsa/Home/" + 'level_classes',
-				{'level_name':$('.level_drop').val()})
+				{'level_name':Level_Name})
 				.done(function(data){
 					obj=JSON.parse(data);
-					$('.class_drop').empty();
-					$('<option/>').val('').html('اختر الصف').appendTo('.class_drop');
+					$('.class_ul').remove();
+					$("<ul class='class_ul'></ul>").appendTo('#classesdiv');
 
 					for (i=0;i<obj.length;i++){
-						$('<option/>').val(obj[i]).html(obj[i]).appendTo('.class_drop');
+						$("<li class='class_option'><input type='checkbox' value='"+obj[i]+"' >"+ obj[i] +"</input></li>").appendTo('.class_ul');
 					}
 
 				})
 				.fail(function(){
-					$('.class_drop').empty();
+					$('.class_ul').remove();
 
 
-				});
-
-
-
-	}
-	function put_rooms(){
-		$.post("http://localhost/alaqsa/Home/" + 'class_rooms',
-				{'class_name':$('.class_drop').val(),'level_name':$('.level_drop').val()})
-				.done(function(data){
-					obj=JSON.parse(data);
-					$('.room_drop').empty();
-					$('<option/>').val('').html('اختر الفصل').appendTo('.room_drop');
-
-					for (i=0;i<obj.length;i++){
-						$('<option/>').val(obj[i]).html(obj[i]).appendTo('.room_drop');
-					}
-
-				})
-				.fail(function(data){
-					$('.room_drop').empty();
-
-				});
-
-	}
-
-
+				});	     });
+}
