@@ -56,6 +56,20 @@ class Mhome extends CI_Model {
 		}
 		return $levels;
 	}
+	
+	public function get_levels_permit(){
+		$username=$this->session->userdata('user_username');
+		$this->db->select('permit_level');
+		$permit_marks=$this->Mhome->get_where('aq_permissions', array('permit_username'=>$username));
+		foreach ($permit_marks->result() as $row){
+			$levels[$row->permit_level]=$row->permit_level;
+	
+		}
+		return $levels;
+	}
+	
+	
+	
 	 
 	public function get_users(){
 		$query=$this->db->get('aq_users');

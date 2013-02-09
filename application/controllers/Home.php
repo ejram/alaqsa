@@ -27,11 +27,17 @@ class Home extends CI_Controller {
 	////////////////////
 	public function c_panel($table_data)
 	{
+		if($table_data=='report')
+		{
+			$this->load->view('report');
+				
+		}
 		$data ['table_data'] = $table_data;
+		
 		$this->load->view('admin_header');
-		$this->load->view('admin_content', $data);
-		$this->load->view('admin_footer');
+		$this->load->view('admin_content',$data);
 		$this->load->view('admin_addation');
+
 	}
 	//////////////////
 	private function check_isvalidated(){
@@ -77,6 +83,17 @@ class Home extends CI_Controller {
 		);
 		$this->ins_query('aq_classes', $att1);
 
+	}
+	
+	//////////////////
+	public function class_insert() {
+		$class_name	= $_POST['class_name'];
+		$level_name 	= $_POST['level_name'];
+		$att1 = array('class_level'	=> $level_name,
+				'class_name'	=> $class_name
+		);
+		$this->ins_query('aq_classes', $att1);
+	
 	}
 	//////////////////
 	public function level_insert() {
@@ -134,18 +151,9 @@ class Home extends CI_Controller {
 	}
 
 	//////////////////
-	public function report_insert() {
-		$att1 = array(
-				'report_name' 		=> $_POST ['report_name'],
-				'report_level'		=> $_POST ['report_level'],
-				'report_class'		=> $_POST ['report_class'],
-				'report_room'		=> $_POST ['report_room'],
-				'report_subject'	=> $_POST ['report_subject'],
-				'report_test'		=> $_POST ['report_test'],
-				'report_skill'		=> $_POST ['report_skill']
-		);
-		$this->ins_query('aq_reports',$att1);
+	public function report() {
 
+	
 	}
 
 
@@ -166,7 +174,7 @@ class Home extends CI_Controller {
 				'st_gfne'			=> $_POST ['st_gfne'],
 				'st_lna' 			=> $_POST ['st_lna'],
 				'st_lne'			=> $_POST ['st_lne'],
-				'st_birthdate'		=> $_POST ['st_birthdate'],
+				'st_birthplace'		=> $_POST ['st_birthplace'],
 				'st_birthdate'		=> $_POST ['st_birthdate'],
 				'st_guardname'		=> $_POST ['st_guardname'],
 				'st_guardbirth'		=> $_POST ['st_guardbirth'],
@@ -300,34 +308,7 @@ foreach($test->result() as $row2)
 		$this->ins_query('aq_users',$att1);
 
 	}
-	////////////////////
-	public function ins_room() {
-		$room_level = $_POST['room_insert_level_name'];
-		$room_class = $_POST['room_insert_class_name'];
-		$room_name =  $_POST['room_insert_name'];
-		$att = array (	'room_class' => $room_class,
-				'room_level' => $room_level,
-				'room_name'  => $room_name
-		);
-		$this->ins_query('aq_rooms', $att);
-	}
-	//////////////////////
-	public function insert_class_form() {
-		// Insert Class form
-		echo ' <p> ' . ' إضافة صف: ' . ' </p> ' ;
-		$att = array ( 'id' => 'class_insert_form' );
-		$this->db->select('level_name')->from('aq_levels');
-		$levels1=$this->db->get();
-		foreach ($levels1->result() as $row){
-			$levels[$row->level_name]=$row->level_name;
 
-		}
-		echo form_open('',$att);
-		echo '<p>المرحلة:'. form_dropdown('aqsa_level2',$levels).'</p>';
-		echo '<p>الصف:'. form_input('aqsa_class2','الأول').'</p>';
-		echo '<p>'.form_submit('submit','إضافة').'</p>';
-		echo form_close();
-	}
 	/////////////////////
 	public function modify_class(){
 		$level_name= $_POST['class_level_modify_name'];
@@ -362,40 +343,7 @@ foreach($test->result() as $row2)
 	}
 
 
-	//////////////
-	public function permission_search(){
-		$user_search = $_POST['user_search'];
-		$user = $this->Mhome->get_where('aq_permissions',array('permit_username'=>$user_search));
-		$i=0;
-		$json_data="";
-		if(!$user->result())
-		{
-			echo "false";
-			exit;
-		}
 
-			
-		echo $user;
-
-
-
-	}
-	
-	
-	//////////////
-	public function assign_insert(){
-
-		$att1 = array(
-				'assign_teacher' 	=> $_POST['assign_teacher'],
-				'assign_room' 		=> $_POST['assign_room'],
-				'assign_class' 	=> $_POST['assign_class'],
-				'assign_level' 	=> $_POST['assign_level'],
-				'assign_subject' 	=> $_POST['assign_subject']
-				
-		);
-		$this->ins_query('aq_assign',$att1);
-	
-	}
 
 	//////////////
 	public function level_classes(){
@@ -419,6 +367,34 @@ foreach($test->result() as $row2)
 
 
 	}
+	
+	//////////////
+	public function level_classes_permit(){
+		$username=$this->session->userdata('user_username');
+		$level_name = $_POST['level_name'];
+		$this->db->select('permit_class');
+		$this->db->distinct();
+		$classes1 = $this->Mhome->get_where('aq_permissions',array('permit_level'=>$level_name,
+				'permit_username'=>$username
+				));
+		$i=0;
+		$json_data="";
+		if(!$classes1->result())
+		{
+			echo "false";
+			exit;
+		}
+		foreach($classes1->result() as $row){
+			$classes[$i]=$row->permit_class;
+			$i++;
+		}
+			
+		echo json_encode($classes, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+	
+	
+	
+	}
+	
 	//////////////////////////
 	public function class_rooms(){
 		$level_name = $_POST['level_name'];
@@ -438,6 +414,60 @@ foreach($test->result() as $row2)
 		}
 
 		echo json_encode($rooms, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+	}
+	
+	
+	//////////////////////////
+	public function class_rooms_permit(){
+		$username=$this->session->userdata('user_username');
+		
+		$level_name = $_POST['level_name'];
+		$class_name = $_POST['class_name'];
+		$this->db->select('permit_room');
+		$this->db->distinct();
+		$rooms_query = $this->Mhome->get_where('aq_permissions',array('permit_level'=>$level_name,
+				'permit_username'=>$username,'permit_class'=>$class_name
+				));
+		$i=0;
+		$json_data="";
+		if(!$rooms_query->result())
+		{
+			echo "false";
+			exit;
+		}
+		foreach($rooms_query->result() as $row){
+			$rooms[$i]=$row->permit_room;
+			$i++;
+		}
+	
+		echo json_encode($rooms, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+	}
+	
+	
+	//////////////////////////
+	public function class_subjects_permit(){
+		$username=$this->session->userdata('user_username');
+	
+		$level_name = $_POST['level_name'];
+		$class_name = $_POST['class_name'];
+		$this->db->select('permit_subject');
+		$this->db->distinct();
+		$subs_query = $this->Mhome->get_where('aq_permissions',array('permit_level'=>$level_name,
+				'permit_username'=>$username,'permit_class'=>$class_name
+		));
+		$i=0;
+		$json_data="";
+		if(!$subs_query->result())
+		{
+			echo "false";
+			exit;
+		}
+		foreach($subs_query->result() as $row){
+			$subs[$i]=$row->permit_subject;
+			$i++;
+		}
+	
+		echo json_encode($subs, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
 	}
 
 	//////////////////////////
@@ -486,6 +516,68 @@ foreach($test->result() as $row2)
 	}
 	
 	//////////////////////////
+	public function room_sts(){
+		$level_name = $_POST['level_name'];
+		$class_name = $_POST['class_name'];
+		$room_name = $_POST['room_name'];
+		$st_query = $this->Mhome->get_where('aq_students',array('st_class' => $class_name,
+				'st_level' => $level_name, 'st_room' => $room_name));
+		$i=0;
+		
+		$json_data="";
+		if(!$st_query->result())
+		{
+			echo "false";
+			exit;
+		}
+		$rooms_array=array();
+		foreach($st_query->result() as $row){
+			$rooms_array[$i]=array(
+			'name'=>$row->st_fna.' '. $row->st_ffna.' '.$row->st_lna,
+			'id'=>$row->st_id
+					
+
+			);
+			$i++;
+				
+		}
+	
+		echo json_encode($rooms_array, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+	}
+	
+	
+	
+	//////////////////////////
+	public function room_sts_full(){
+		$level_name = $_POST['level_name'];
+		$class_name = $_POST['class_name'];
+		$room_name = $_POST['room_name'];
+		$st_query = $this->Mhome->get_where('aq_students',array('st_class' => $class_name,
+				'st_level' => $level_name, 'st_room' => $room_name));
+		$i=0;
+	
+		$json_data="";
+		if(!$st_query->result())
+		{
+			echo "false";
+			exit;
+		}
+		$rooms_array=array();
+		foreach($st_query->result() as $row){
+			$rooms_array[$i]=array(
+					'name'=>$row->st_fna.' '. $row->st_ffna.' '.$row->st_lna,
+					'id'=>$row->st_id
+						
+	
+			);
+			$i++;
+	
+		}
+	
+		echo json_encode($rooms_array, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+	}
+	
+	//////////////////////////
 	public function test_skills(){
 		$level_name = $_POST['level_name'];
 		$class_name = $_POST['class_name'];
@@ -518,12 +610,78 @@ foreach($test->result() as $row2)
 		echo json_encode($teacher_query->result(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
 
 	}
+	
+	//////////////////////////
+	public function get_level(){
+		$level_name = $_POST['level_name'];
+		$level_query = $this->Mhome->get_where('aq_levels',array('level_name'=>$level_name));
+		echo json_encode($level_query->result(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+	
+	}
+	
+	//////////////////////////
+	public function get_class(){
+		$class_name = $_POST['class_name'];
+		$class_query = $this->Mhome->get_where('aq_classes',array('class_name'=>$class_name));
+		echo json_encode($class_query->result(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+	
+	}
+	
+	//////////////////////////
+	public function get_room(){
+		$room_id = $_POST['room_id'];
+		$room_query = $this->Mhome->get_where('aq_rooms',array('room_id'=>$room_id));
+		echo json_encode($room_query->result(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+	
+	}
+	
+	//////////////////////////
+	public function get_subject(){
+		$subject_id = $_POST['subject_id'];
+		$subject_query = $this->Mhome->get_where('aq_subjects',array('subject_id'=>$room_id));
+		echo json_encode($subject_query->result(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+	
+	}	
 
+	//////////////////////////
+	public function get_test(){
+		$test_id = $_POST['test_id'];
+		$test_query = $this->Mhome->get_where('aq_tests',array('test_id'=>$test_id));
+		echo json_encode($test_query->result(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+	
+	}
+	
+	//////////////////////////
+	public function get_skill(){
+		$skill_id = $_POST['skill_id'];
+		$skill_query = $this->Mhome->get_where('aq_skills',array('skill_id'=>$skill_id));
+		echo json_encode($skill_query->result(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+	
+	}
+	
+	
 	//////////////////////////
 	public function get_user(){
 		$user_id = $_POST['user_id'];
 		$user_query = $this->Mhome->get_where('aq_users',array('user_id'=>$user_id));
 		echo json_encode($user_query->result(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+	
+	}
+	
+
+	//////////////////////////
+	public function get_student(){
+		$student_id = $_POST['st_id'];
+		$student_query = $this->Mhome->get_where('aq_students',array('st_id'=>$student_id));
+		echo json_encode($student_query->result(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+	
+	}
+	
+	//////////////////////////
+	public function get_permission(){
+		$permit_id = $_POST['permit_id'];
+		$permission_query = $this->Mhome->get_where('aq_permission',array('permit_id'=>$permit_id));
+		echo json_encode($permission_query->result(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
 	
 	}
 
@@ -565,12 +723,75 @@ foreach($test->result() as $row2)
 		$this->db->update('aq_users', $att1);
 	}
 	
-	//////////////////////////
-	public function get_permission(){
-		$permit_id = $_POST['permit_id'];
-		$permission_query = $this->Mhome->get_where('aq_permission',array('permit_id'=>$permit_id));
-		echo json_encode($permission_query->result(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+	//////////////////
+	public function modify_student() {
+		$student_past_id = $_POST['hidden_past_student_name'];
+$att1 = array(
+				'st_nationality' 	=> $_POST ['st_nationality'],
+				'st_passnum'		=> $_POST ['st_passnum'],
+				'st_urbannum'		=> $_POST ['st_urbannum'],
+				'st_iddate'			=> $_POST ['st_iddate'],
+				'st_stayvalid'		=> $_POST ['st_stayvalid'],
+				'st_fna'			=> $_POST ['st_fna'],
+				'st_fne'			=> $_POST ['st_fne'],
+				'st_ffna'			=> $_POST ['st_ffna'],
+				'st_ffne'			=> $_POST ['st_ffne'],
+				'st_gfna'			=> $_POST ['st_gfna'],
+				'st_gfne'			=> $_POST ['st_gfne'],
+				'st_lna' 			=> $_POST ['st_lna'],
+				'st_lne'			=> $_POST ['st_lne'],
+				'st_birthplace'		=> $_POST ['st_birthplace'],
+				'st_birthdate'		=> $_POST ['st_birthdate'],
+				'st_guardname'		=> $_POST ['st_guardname'],
+				'st_guardbirth'		=> $_POST ['st_guardbirth'],
+				'st_guardplace'		=> $_POST ['st_guardplace'],
+				'st_guardidnum'		=> $_POST ['st_guardidnum'],
+				'st_guardiddate'	=> $_POST ['st_guardiddate'],
+				'st_blood'			=> $_POST ['st_blood'],
+				'st_livingplace'	=> $_POST ['st_livingplace'],
+				'st_livingowning' 	=> $_POST ['st_livingowning'],
+				'st_guardmarital'	=> $_POST ['st_guardmarital'],
+				'st_region'			=> $_POST ['st_region'],
+				'st_city'			=> $_POST ['st_city'],
+				'st_district'		=> $_POST ['st_district'],
+				'st_mainstr'		=> $_POST ['st_mainstr'],
+				'st_substr'			=> $_POST ['st_substr'],
+				'st_homenum'		=> $_POST ['st_homenum'],
+				'st_homebeside'		=> $_POST ['st_homebeside'],
+				'st_phone1'			=> $_POST ['st_phone1'],
+				'st_phone2'			=> $_POST ['st_phone2'],
+				'st_mobile'			=> $_POST ['st_mobile'],
+				'st_email'			=> $_POST ['st_email'],
+				'st_guardjob'		=> $_POST ['st_guardjob'],
+				'st_guardcomp'		=> $_POST ['st_guardcomp'],
+				'st_vacaddress'		=> $_POST ['st_vacaddress'],
+				'st_postal'			=> $_POST ['st_postal'],
+				'st_mailbox'		=> $_POST ['st_mailbox'],
+				'st_fax'			=> $_POST ['st_fax'],
+				'st_vehicle'		=> $_POST ['st_vehicle'],
+				'st_joinstate'		=> $_POST ['st_joinstate'],
+				'st_villageask'		=> $_POST ['st_villageask'],
+				'st_village'		=> $_POST ['st_village'],
+				'st_kinname'		=> $_POST ['st_kinname'],
+				'st_kinaddress'		=> $_POST ['st_kinaddress'],
+				'st_familynum'		=> $_POST ['st_familynum'],
+				'st_bronum'			=> $_POST ['st_bronum'],
+				'st_sisnum'			=> $_POST ['st_sisnum'],
+				'st_seq'			=> $_POST ['st_seq'],
+				'st_fatheralive'	=> $_POST ['st_fatheralive'],
+				'st_motheralive'	=> $_POST ['st_motheralive'],
+				'st_fatheredulevel'	=> $_POST ['st_fatheredulevel'],
+				'st_motheredulevel'	=> $_POST ['st_motheredulevel'],
+				'st_livingwith'		=> $_POST ['st_livingwith'],
+				'st_level' 			=> $_POST ['st_level'],
+				'st_class'			=> $_POST ['st_class'],
+				'st_room'			=> $_POST ['st_room']
+					
+		
 	
+		);
+		$this->db->where('st_id',$student_past_id);
+		$this->db->update('aq_students', $att1);
 	}
 	
 	
@@ -648,7 +869,73 @@ foreach($test->result() as $row2)
 		$this->db->where('subject_id',$subject_past_id);
 		$this->db->update('aq_subjects', $att1);
 	}
+	//////////////
+	public function permission_search(){
+		$user_search = $_POST['user_search'];
+		$user = $this->Mhome->get_where('aq_permissions',array('permit_username'=>$user_search));
+		$i=0;
+		$json_data="";
+		if(!$user->result())
+		{
+			echo "false";
+			exit;
+		}
 	
+			
+		echo $user;
+	
+	
+	
+	}
+	
+	
+	//////////////
+	public function assign_insert(){
+	
+		$att1 = array(
+				'assign_teacher' 	=> $_POST['assign_teacher'],
+				'assign_room' 		=> $_POST['assign_room'],
+				'assign_class' 	=> $_POST['assign_class'],
+				'assign_level' 	=> $_POST['assign_level'],
+				'assign_subject' 	=> $_POST['assign_subject']
+	
+		);
+		$this->ins_query('aq_assign',$att1);
+	
+	}
+	
+	
+	//////////////
+	public function room_insert(){
+	
+		$att1 = array(
+				'room_level' 	=> $_POST['room_level'],
+				'room_class' 	=> $_POST['room_class'],
+				'room_name' 	=> $_POST['room_name']
+		);
+		$this->ins_query('aq_rooms',$att1);
+	
+	}
+	
+	
+	public function get_report(){
+		
+		$att1 = array(
+				'mark_level' 	=> $_POST['report_level'],
+				'mark_class' 	=> $_POST['report_class'],
+				'mark_room' 	=> $_POST['report_room'],
+				'mark_subject' 	=> $_POST['report_subject'],
+				'mark_test' 	=> $_POST['report_test'],
+				'mark_skill' 	=> $_POST['report_skill'],
+				'mark_student' 	=> $_POST['report_student']
+	);
+		
+		$marks = $this->Mhome->get_where('aq_marks',$att1);
+		
+print_r($marks->result());		
+		
+		
+	}
 	
 	
 }

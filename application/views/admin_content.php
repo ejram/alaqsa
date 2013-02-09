@@ -1,13 +1,29 @@
-
-<div id="content">
+                <div class="art-content-layout">
+                    <div class="art-content-layout-row">
+                        <div class="art-layout-cell art-content">
+                          <div class="art-post">
+                              <div class="art-post-tl"></div>
+                              <div class="art-post-tr"></div>
+                              <div class="art-post-bl"></div>
+                              <div class="art-post-br"></div>
+                              <div class="art-post-tc"></div>
+                              <div class="art-post-bc"></div>
+                              <div class="art-post-cl"></div>
+                              <div class="art-post-cr"></div>
+                              <div class="art-post-cc"></div>
+                              <div class="art-post-body">
+                          <div class="art-post-inner art-article">
+                                          <h2 class="art-postheader"><? ?></h2>
+                                          <div class="art-postcontent">
 	<?  
-
+	if($table_data!='aq_reports')
 	if($this->session->userdata('user_role')=='admin')
 	{
+		
 		$att = array('id' => 'table_form');
 		echo form_open('', $att);
 		$tmpl = array ( 'table_open'  => '<table class = "mytable"
-				cellpadding = "8" cellspacing = "3">'
+				cellpadding = "8" cellspacing = "3" align="center">'
 		);
 		$this->table->set_template($tmpl);
 		switch ($table_data)
@@ -47,7 +63,6 @@
 						'اسم المعلم','رقم الهوية','مكان الميلاد','تاريخ الميلاد','التخصص','تاريخ التخرج','المؤهل الدراسي','اسم الجامعة','الجنسية','إيميل المعلم','جوال المعلم','تعديل');
 				echo form_hidden('hidden_table_name',$table_data);
 				echo form_hidden('hidden_item_id','teacher_id');
-				echo "<span id = 'teacher_add_button' class = 'aqsa_button'>إضافة معلم</span>";
 				break;
 
 			case 'aq_subjects':
@@ -112,12 +127,7 @@
 										echo form_hidden('hidden_item_id','user_id');
 										break;
 			case 'aq_reports':
-				$this->table->set_heading('<input type="checkbox"
-						name="reports_check" value="all" />','اسم التقرير','المرحلة ','الصف','الفصل'
-								,'المادة ','المعيار','المهارة','تعديل'
-										);
-										echo form_hidden('hidden_table_name',$table_data);
-										echo form_hidden('hidden_item_id','report_id');
+
 										break;
 
 		}
@@ -266,14 +276,7 @@
 									break;
 
 				case 'aq_reports':
-					$this->table->add_row('<input type="checkbox"
-							name="check_list[]" value=\''. $row->report_id . '\'/>',
-							$row->report_name,$row->report_level,
-							$row->report_class,$row->report_room,
-							$row->report_subject,$row->report_test,$row->report_skill,
-							'<span id = '.$row->report_id.' class=\'modify_report\'>تعديل</span>'
-
-									);
+					$this->table->add_row(	);
 									break;
 
 
@@ -282,136 +285,69 @@
 					echo "";
 			}
 		}
-
+		
 		echo $this->table->generate();
 		echo form_submit('submit','حذف');
 		echo form_close();
-		echo "Number of rows = ". $Q->num_rows();
+		
+		//insert level form
 		if($table_data=='aq_levels')
 		{
-			//insert level form
-			echo "<div id='insert_level_div'>";
-			echo '<p>'.'إضافة مرحلة:'.'</p>';
-			$att=array('id'=>'level_insert_form');
-			echo form_open('',$att);
-			echo '<p>المرحلة:'. form_input('level_insert_name','').'</p>';
-			echo '<p>'.form_submit('submit','إضافة').'</p>';
-			echo form_close();
-			echo "</div>";
+			echo "<button class='add_level add'>إضافة مرحلة</button>";
 		}
 
+		//insert class form
+		if($table_data=='aq_classes add' )
+		{
+			echo "<button class='add_class'>إضافة صف</button>";
+		}
+		
+		//insert room form
+		if($table_data=='aq_rooms')
+		{
+			echo "<button class='add_room add'>إضافة فصل</button>";
+				
+		}
+		
+		
+		
 		//insert teacher form
 		if($table_data=='aq_teachers')
 		{
-			echo "<div id='insert_teacher_div' style=''>";
-			echo '<p>'.'إضافة معلم:'.'</p>';
-			$att=array('id'=>'teacher_insert_form');
-			echo form_open('',$att);
-			echo '<p>اسم المعلم:'. form_input('teacher_name','').'</p>';
-			echo '<p>رقم الهوية:'. form_input('teacher_idnumber','').'</p>';
-			echo '<p>مكان الولادة:'. form_input('teacher_birthplace','').'</p>';
-			echo '<p>تاريخ الميلاد:'. form_input('teacher_birthdate','').' يوم-شهر-سنة </p>';
-			echo '<p>التخصص:'. form_input('teacher_specialist','').'</p>';
-			echo '<p>تاريخ التخرج:'. form_input('teacher_gradedate','').' يوم-شهر-سنة </p>';
-			echo '<p>المؤهل الدراسي:'. form_input('teacher_qual','').'</p>';
-			echo '<p>اسم الجامعة:'. form_input('teacher_university','').'</p>';
-			echo '<p>الجنسية:'. form_input('teacher_nationality','').'</p>';
-			echo '<p>إيميل المعلم:'. form_input('teacher_email','').'</p>';
-			echo '<p>جوال المعلم:'. form_input('teacher_mobile','').'</p>';
-
-			echo '<p>'.form_submit('submit','إضافة').'</p>';
-			echo form_close();
-			echo "</div>";
+			echo "<button class='add_teacher add'>إضافة معلم</button>";
+				
 
 		}
 
-		
-// 		$levels = $this->Mhome->get_levels();
-//		$begin_para = array(''=>'');
-
-// 		echo '<p>المرحلة:'. form_dropdown('assign_level',$levels ,'','class="level_drop"').'</p>';
-// 		echo '<p>الصف:'. form_dropdown('assign_class',$begin_para ,'','class="class_drop"').'</p>';
-// 		echo '<p>الفصل:'. form_dropdown('assign_room',$begin_para ,'','class="room_drop"').'</p>';
-// 		echo '<p>المادة:'. form_dropdown('assign_subject',$begin_para,'','class="subject_drop"').'</p>';
-// 		echo '<p>اسم المعلم:'. form_dropdown('assign_teacher',$teachers,'','class=""').'</p>';
 		//insert subject form
 		if($table_data=='aq_subjects')
 		{
-			$levels = $this->Mhome->get_levels();
-			$begin_para = array(''=>'');
-			echo "<div id='insert_subject_div' style=''>";
-			echo '<p>'.'إضافة مادة:'.'</p>';
-			$att=array('id'=>'subject_insert_form');
-			echo form_open('',$att);
-			echo '<p>اسم المادة:'. form_input('subject_name','').'</p>';
-			echo '<p>المرحلة:'. form_dropdown('subject_level',$levels ,'','class="level_drop"').'</p>';
-			echo '<p>الصف:'. form_dropdown('subject_class',$begin_para ,'','class="class_drop"').'</p>';
-			echo '<p>'.form_submit('submit','إضافة').'</p>';
-			echo form_close();
-			echo "</div>";
+			echo "<button class='add_subject add'>إضافة مادة</button>";
+				
 
 		}
 
 		//insert test form
 		if($table_data=='aq_tests')
 		{
-			$levels = $this->Mhome->get_levels();
-			$begin_para = array(''=>'');
-			echo "<div id='insert_test_div' style=''>";
-			echo '<p>'.'إضافة معيار:'.'</p>';
-			$att=array('id'=>'test_insert_form');
-			echo form_open('',$att);
-			echo '<p>اسم المعيار:'. form_input('test_name','').'</p>';
-			echo '<p>المرحلة:'. form_dropdown('test_level',$levels ,'','class="level_drop"').'</p>';
-			echo '<p>الصف:'. form_dropdown('test_class',$begin_para ,'','class="class_drop"').'</p>';
-			echo '<p>المادة:'. form_dropdown('test_subject',$begin_para,'','class="subject_drop"').'</p>';
-			echo '<p>'.form_submit('submit','إضافة').'</p>';
-			echo form_close();
-			echo "</div>";
+			echo "<button class='add_test add'>إضافة معيار</button>";
+				
 
 		}
 
 		//insert skill form
 		if($table_data=='aq_skills')
 		{
-			$levels = $this->Mhome->get_levels();
-			$begin_para = array(''=>'');
-			echo "<div id='insert_skill_div' style=''>";
-			echo '<p>'.'إضافة مهارة:'.'</p>';
-			$att=array('id'=>'skill_insert_form');
-			echo form_open('',$att);
-			echo '<p>اسم المهارة:'. form_input('skill_name','').'</p>';
-			echo '<p>المرحلة:'. form_dropdown('skill_level',$levels ,'','class="level_drop"').'</p>';
-			echo '<p>الصف:'. form_dropdown('skill_class',$begin_para ,'','class="class_drop"').'</p>';
-			echo '<p>المادة:'. form_dropdown('skill_subject',$begin_para,'','class="subject_drop"').'</p>';
-			echo '<p>المعيار:'. form_dropdown('skill_test',$begin_para ,'','class="test_drop"').'</p>';
-			echo '<p>أقل درجة:'. form_input('min_grade','').'</p>';
-			echo '<p>أعلى درجة:'. form_input('max_grade','').'</p>';
-
-			echo '<p>'.form_submit('submit','إضافة').'</p>';
-			echo form_close();
-			echo "</div>";
+			echo "<button class='add_skill1 add'>إضافة مهارة</button>";
+				
 
 		}
 
 		//insert user form
 		if($table_data=='aq_users')
 		{
-			echo "<div id='insert_user_div' style=''>";
-			echo '<p>'.'إضافة مستخدم:'.'</p>';
-			$att=array('id'=>'user_insert_form');
-			echo form_open('',$att);
-			echo '<p>اسم المستخدم:'. form_input('user_name','').'</p>';
-			echo '<p>اسم الدخول:'. form_input('user_username','').'</p>';
-			echo '<p>كلمة السر:'. form_input('user_password','').'</p>';
-			echo '<p>إعادة كلمة السر:'. form_input('user_repassword','').'</p>';
-			echo '<p>البريد الإلكتروني:'. form_input('user_email','').'</p>';
-			echo '<p>الهاتف:'. form_input('user_mobile','').'</p>';
-			$role_array= array('admin'=>'مدير','user'=>'مستخدم');
-			echo '<p>المسمى الوظيفي :'. form_dropdown('user_role',$role_array).'</p>';
-			echo '<p>'.form_submit('submit','إضافة').'</p>';
-			echo form_close();
-			echo "</div>";
+			echo "<button class='add_user add'>إضافة مستخدم</button>";
+				
 
 		}
 			
@@ -419,191 +355,67 @@
 		//insert permission form
 		if($table_data=='aq_permissions')
 		{
-			echo "<div id='permission_search_div' style=''>";
-			echo '<p>'.'إضافة مستخدم:'.'</p>';
-			$att=array('id'=>'permission_search_form');
-			echo form_open('',$att);
-			echo '<p>اسم الدخول للمستخدم:'. form_input('user_search','').'</p>';
 
-			echo '<p>'.form_submit('submit','إضافة').'</p>';
-			echo form_close();
-			echo "</div>";
 
 
 
 			//permission form
-			$levels = $this->Mhome->get_levels();
-			$users = $this->Mhome->get_users();
+			echo "<button class='add_permission add'>إضافة سماحية</button>";
 				
-			$begin_para = array(''=>'');
-
-			echo "<div id='insert_permission_div' style=''>";
-			echo '<p>'.'إضافة صلاحيات:'.'</p>';
-			$att=array('id'=>'permission_insert_form');
-			echo form_open('',$att);
-			echo '<p>اسم الدخول للمستخدم:'. form_dropdown('permit_username',$users).'</p>';
-			echo '<p>المرحلة:'. form_dropdown('permit_level',$levels ,'','class="level_drop"').'</p>';
-			echo '<p>الصف:'. form_dropdown('permit_class',$begin_para ,'','class="class_drop"').'</p>';
-			echo '<p>الفصل:'. form_dropdown('permit_room',$begin_para ,'','class="room_drop"').'</p>';
-			echo '<p>المادة:'. form_dropdown('permit_subject',$begin_para,'','class="subject_drop"').'</p>';
-			echo '<p>'.form_submit('submit','إضافة').'</p>';
-			echo form_close();
-			echo "</div>";
 
 
 
 
 		}
-
-
-		//insert user form
-		if($table_data=='aq_reports')
-		{
-			$levels = $this->Mhome->get_levels();
-			$users = $this->Mhome->get_users();
-			
-			$begin_para = array(''=>'');
-				
-			echo "<div id='insert_report_div' style=''>";
-			echo '<p>'.'إضافة تقرير:'.'</p>';
-			$att=array('id'=>'report_insert_form');
-			echo form_open('',$att);
-			?>
-						<div id = "levelsdiv">
-			<?php 
-			foreach($levels as $level_check)
-			{
-				echo form_checkbox('levels_check', $level_check, FALSE) . $level_check ;
-			}
-			?>
-			</div>
-			<div id = "classesdiv"></div>
-			<div id = "roomsdiv"></div>
-			<div id = "subjectsdiv"></div>
-			<div id = "testsdiv"></div>
-			<?php 
-			echo '<p>المرحلة:'. form_dropdown('report_level',$levels ,'','class="level_drop"').'</p>';
-			echo '<p>الصف:'. form_dropdown('report_class',$begin_para ,'','class="class_drop"').'</p>';
-			echo '<p>الفصل:'. form_dropdown('report_room',$begin_para ,'','class="room_drop"').'</p>';
-			echo '<p>المادة:'. form_dropdown('report_subject',$begin_para,'','class="subject_drop"').'</p>';
-			echo '<p>المعيار:'. form_dropdown('report_test',$begin_para ,'','class="test_drop"').'</p>';
-			echo '<p>المهارة:'. form_dropdown('report_skill',$begin_para ,'','class="skill_drop"').'</p>';
-				
-			echo '<p>اسم التقرير:'. form_input('report_name','').'</p>';
-			echo '<p>'.form_submit('submit','إضافة').'</p>';
-			echo form_close();
-			echo "</div>";
-
-		}
-
 		//insert assign form
 		if($table_data=='aq_assign')
 		{
-			echo "<div id='insert_assign_div' style=''>";
-			echo '<p>'.'إضافة تقرير:'.'</p>';
-			$att=array('id'=>'assign_insert_form');
-			echo form_open('',$att);
-			echo '<p>اسم المعلم:'. form_input('assign_teacher','').'</p>';
-			echo '<p>المرحلة:'. form_input('assign_level','').'</p>';
-			echo '<p>الصف:'. form_input('assign_class','').'</p>';
-			echo '<p>الفصل:'. form_input('assign_room','').'</p>';
-			echo '<p>المادة:'. form_input('assign_subject','').'</p>';
-			echo '<p>'.form_submit('submit','إضافة').'</p>';
-			echo form_close();
-			echo "</div>";
-
+			echo "<button class='add_assign add'>اسناد</button>";
+		
+		
 		}
-
-
-
-
+		
+		
+		
+		
 		//insert student form
 		if($table_data=='aq_students')
 		{
-			echo "<div id='insert_student_div' style=''>";
-			echo '<p>'.'إضافة طالب:'.'</p>';
-			$att=array('id'=>'student_insert_form');
-			echo form_open('',$att);
-			echo '<p> الجنسية:'. form_input('st_nationality','').'</p>';
-			echo '<p> رقم جواز السفر:'. form_input('st_passnum','').'</p>';
-			echo '<p> رقم السجل المدني للطالب/الإقامة:'. form_input('st_urbannum','').'</p>';
-			echo '<p> تاريخ الهوية:'. form_input('st_iddate','').'</p>';
-			echo '<p> تاريخ انتهاء الإقامة:'. form_input('st_stayvalid','').'</p>';
-			echo '<p> الاسم الأول بالعربي:'. form_input('st_fna','').'</p>';
-			echo '<p> الاسم الأول بالأنجليزي:'. form_input('st_fne','').'</p>';
-			echo '<p> اسم الأب بالعربي:'. form_input('st_ffna','').'</p>';
-			echo '<p> اسم الأب بالانجليزي:'. form_input('st_ffne','').'</p>';
-			echo '<p> اسم الجد بالعربي:'. form_input('st_gfna','').'</p>';
-			echo '<p> اسم الجد بالإنجليزي:'. form_input('st_gfne','').'</p>';
-			echo '<p> اسم العائلة بالعربي:'. form_input('st_lna','').'</p>';
-			echo '<p> اسم العائلة بالإنجليزي:'. form_input('st_lne','').'</p>';
-			echo '<p> تاريخ ميلاد الطالب:'. form_input('st_birthdate','').'</p>';
-			echo '<p> مكان الميلاد:'. form_input('st_birthdate','').'</p>';
-			echo '<p> اسم ولي أمر الطالب الرباعي:'. form_input('st_guardname','').'</p>';
-			echo '<p> تاريخ ميلاد ولي الأمر:'. form_input('st_guardbirth','').'</p>';
-			echo '<p> مكان ميلاد ولي الأمر:'. form_input('st_guardplace','').'</p>';
-			echo '<p> رقم هوية ولي الأمر:'. form_input('st_guardidnum','').'</p>';
-			echo '<p> تاريخ الهوية لولي الأمر:'. form_input('st_guardiddate','').'</p>';
-			echo '<p> فئة دم الطالب:'. form_input('st_blood','').'</p>';
-			echo '<p> نوع السكن:'. form_input('st_livingplace','').'</p>';
-			echo '<p> ملكية السكن:'. form_input('st_livingowning','').'</p>';
-			echo '<p> الحالة الإجتماعية لولي أمر الطالب:'. form_input('st_guardmarital','').'</p>';
-			echo '<p> المنطقة الإدارية:'. form_input('st_region','').'</p>';
-			echo '<p> المدينة:'. form_input('st_city','').'</p>';
-			echo '<p> الحي:'. form_input('st_district','').'</p>';
-			echo '<p> الشارع الرئيسي:'. form_input('st_mainstr','').'</p>';
-			echo '<p> الشارع الفرعي:'. form_input('st_substr','').'</p>';
-			echo '<p> رقم المنزل:'. form_input('st_homenum','').'</p>';
-			echo '<p> بجوار:'. form_input('st_homebeside','').'</p>';
-			echo '<p> الهاتف 1:'. form_input('st_phone1','').'</p>';
-			echo '<p> الهاتف 2:'. form_input('st_phone2','').'</p>';
-			echo '<p> الجوال (هاتف التواصل):'. form_input('st_mobile','').'</p>';
-			echo '<p> البريد الإلكتروني:'. form_input('st_email','').'</p>';
-			echo '<p> عمل ولي الأمر:'. form_input('st_guardjob','').'</p>';
-			echo '<p> جهة العمل:'. form_input('st_guardcomp','').'</p>';
-			echo '<p> العنوان في الإجازة:'. form_input('st_vacaddress','').'</p>';
-			echo '<p> الرمز البريدي:'. form_input('st_postal','').'</p>';
-			echo '<p> صندوق البريد:'. form_input('st_mailbox','').'</p>';
-			echo '<p> الفاكس:'. form_input('st_fax','').'</p>';
-			echo '<p> وسيلة النقل:'. form_input('st_vehicle','').'</p>';
-			echo '<p> حالة التسجيل:'. form_input('st_joinstate','').'</p>';
-			echo '<p> هل يسكن في قرية:'. form_input('st_villageask','').'</p>';
-			echo '<p> اسم القرية:'. form_input('st_village','').'</p>';
-			echo '<p> اسم قريب الطالب:'. form_input('st_kinname','').'</p>';
-			echo '<p> عنوان قريب الطالب:'. form_input('st_kinaddress','').'</p>';
-			echo '<p> عدد أفراد الأسرة:'. form_input('st_familynum','').'</p>';
-			echo '<p> عدد الأخوة:'. form_input('st_bronum','').'</p>';
-			echo '<p> عدد الأخوات:'. form_input('st_sisnum','').'</p>';
-			echo '<p> تسلسل الطالب:'. form_input('st_seq','').'</p>';
-			echo '<p> هل الأب على قيد الحياة:'. form_input('st_fatheralive','').'</p>';
-			echo '<p> هل الأم على قيد الحياة:'. form_input('st_motheralive','').'</p>';
-			echo '<p> مستوى تعليم الأب:'. form_input('st_fatheredulevel','').'</p>';
-			echo '<p> مستوى تعليم الأم:'. form_input('st_motheredulevel','').'</p>';
-			echo '<p> مع من يسكن الطالب:'. form_input('st_livingwith','').'</p>';
-			echo '<p> المرحلة:'. form_input('st_level','').'</p>';
-			echo '<p> الصف:'. form_input('st_class','').'</p>';
-			echo '<p> الفصل:'. form_input('st_room','').'</p>';
+			echo "<button class='add_student add'>إضافة طالب</button>";
+		
+		}
+	}
 
 
+		//insert report form
+		if($table_data=='aq_reports')
+		{
+			$att11=array('id'=>'report_form', 'target'=>'_blank');
+				
+			$levels = $this->Mhome->get_levels();
+			$users = $this->Mhome->get_users();
 
-
-			echo '<p>'.form_submit('submit','إضافة').'</p>';
-
-
+			$begin_para = array('all'=>'الكل');
+			echo "<div class='form_div'>";
+				
+			echo form_open(base_url().'Report/',$att11);
+			echo '<p><label>المرحلة:</label>'. form_dropdown('report_level',$levels ,'','class="r_level_drop required"').'</p>';
+			echo '<p><label>الصف:</label>'. form_dropdown('report_class',$begin_para ,'','class="r_class_drop required"').'</p>';
+			echo '<p><label>الفصل:</label>'. form_dropdown('report_room',$begin_para ,'','class="r_room_drop required"').'</p>';
+			echo '<p><label>المادة:</label>'. form_dropdown('report_subject',$begin_para,'','class="r_subject_drop required"').'</p>';
+			echo '<p><label>المعيار:</label>'. form_dropdown('report_test',$begin_para ,'','class="r_test_drop required"').'</p>';
+			echo '<p><label>المهارة:</label>'. form_dropdown('report_skill',$begin_para ,'','class="r_skill_drop required"').'</p>';
+			echo '<p><label>اسم الطالب:</label>'. form_dropdown('report_student',$begin_para ,'','class="r_student_drop required"').'</p>';
+			echo form_submit('submit','إظهار');
 			echo form_close();
 			echo "</div>";
 
 		}
 
-		$levels = $this->Mhome->get_levels();
 
-		$classes = array(''=>'');
-		$rooms = array(''=>'');
 
-		echo form_dropdown('dropdown_name',$levels,'','class="level_drop"');
-		echo form_dropdown('dropdown_name1',$classes,'','class="class_drop"');
-		echo form_dropdown('dropdown_name2',$rooms,'','class="room_drop"');
-	}
+
+	
 
 
 	if($this->session->userdata('user_role')=='user')
@@ -690,7 +502,7 @@
 
 						foreach($permit_marks -> result() as $row3)
 						{
-							$mark_st=$this->Mhome->get_where('aq_students', array('st_passnum'=>$row3->mark_student
+							$mark_st=$this->Mhome->get_where('aq_students', array('st_id'=>$row3->mark_student
 							));
 							foreach($mark_st->result() as $student_fn)
 								$this->table->add_row($row3->mark_level,
@@ -722,21 +534,8 @@
 		//insert mark form
 		if($table_data=='aq_marks')
 		{
-			echo "<div id='insert_mark_div' style=''>";
-			echo '<p>'.'إضافة درجة:'.'</p>';
-			$att=array('id'=>'mark_insert_form');
-			echo form_open('',$att);
-			echo '<p>المرحلة :'. form_input('mark_level','').'</p>';
-			echo '<p>الصف:'. form_input('mark_class','').'</p>';
-			echo '<p>الفصل:'. form_input('mark_room','').'</p>';
-			echo '<p>المادة:'. form_input('mark_subject','').'</p>';
-			echo '<p>المعيار:'. form_input('mark_test','').'</p>';
-			echo '<p>المهارة:'. form_input('mark_skill','').'</p>';
-			echo '<p>اسم الطالب:'. form_input('mark_student','').'</p>';
-			echo '<p>العلامة:'. form_input('mark_value','').'</p>';
-			echo '<p>'.form_submit('submit','إضافة').'</p>';
-			echo form_close();
-			echo "</div>";
+			echo "<button class='add_mark'>إضافة علامة</button>";
+				
 
 		}
 
@@ -746,7 +545,17 @@
 
 
 	?>
-
-
-</div>
-
+                                          
+                                              		
+                                              	</div><!-- end row -->
+                                              </div><!-- end table -->
+                                                  
+                                          </div>
+                                          
+                                          
+                          </div>
+                          
+                              </div>
+                          </div>
+                          </div>
+                
